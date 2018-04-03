@@ -1,4 +1,6 @@
-package com.github.datalking;
+package com.github.datalking.beans.factory.config;
+
+import com.github.datalking.beans.PropertyValues;
 
 /**
  * bean的内容及元数据，用来包装bean

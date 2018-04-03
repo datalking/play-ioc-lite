@@ -1,6 +1,7 @@
 package com.github.datalking.context;
 
 import com.github.datalking.bean.HelloWorldService;
+import com.github.datalking.context.support.ClassPathXmlApplicationContext;
 import org.junit.Test;
 
 public class ApplicationContextTest {

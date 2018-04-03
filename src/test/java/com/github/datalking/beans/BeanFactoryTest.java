@@ -1,10 +1,11 @@
-package com.github.datalking;
+package com.github.datalking.beans;
 
 import com.github.datalking.bean.HelloWorldService;
-import com.github.datalking.factory.AbstractBeanFactory;
-import com.github.datalking.factory.AutowireCapableBeanFactory;
+import com.github.datalking.beans.factory.config.BeanDefinition;
+import com.github.datalking.beans.factory.support.AbstractBeanFactory;
+import com.github.datalking.beans.factory.config.AutowireCapableBeanFactory;
 import com.github.datalking.io.ResourceLoader;
-import com.github.datalking.xml.XmlBeanDefinitionReader;
+import com.github.datalking.beans.factory.xml.XmlBeanDefinitionReader;
 import org.junit.Test;
 
 import java.util.Map;

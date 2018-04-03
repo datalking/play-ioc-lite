@@ -1,6 +1,7 @@
-package com.github.datalking.xml;
+package com.github.datalking.beans.factory.xml;
 
-import com.github.datalking.BeanDefinition;
+import com.github.datalking.beans.factory.config.BeanDefinition;
+import com.github.datalking.beans.factory.xml.XmlBeanDefinitionReader;
 import com.github.datalking.io.ResourceLoader;
 import org.junit.Assert;
 import org.junit.Test;

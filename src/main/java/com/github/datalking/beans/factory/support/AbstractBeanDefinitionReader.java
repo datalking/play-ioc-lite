@@ -1,6 +1,7 @@
-package com.github.datalking;
+package com.github.datalking.beans.factory.support;
 
 
+import com.github.datalking.beans.factory.config.BeanDefinition;
 import com.github.datalking.io.ResourceLoader;
 
 import java.util.HashMap;

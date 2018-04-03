@@ -1,9 +1,9 @@
-package com.github.datalking.xml;
+package com.github.datalking.beans.factory.xml;
 
-import com.github.datalking.AbstractBeanDefinitionReader;
-import com.github.datalking.BeanDefinition;
-import com.github.datalking.BeanReference;
-import com.github.datalking.PropertyValue;
+import com.github.datalking.beans.factory.support.AbstractBeanDefinitionReader;
+import com.github.datalking.beans.factory.config.BeanDefinition;
+import com.github.datalking.beans.factory.config.BeanReference;
+import com.github.datalking.beans.PropertyValue;
 import com.github.datalking.io.ResourceLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

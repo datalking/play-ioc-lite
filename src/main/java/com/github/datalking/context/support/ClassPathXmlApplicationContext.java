@@ -1,15 +1,16 @@
-package com.github.datalking.context;
+package com.github.datalking.context.support;
 
 
-import com.github.datalking.BeanDefinition;
-import com.github.datalking.factory.AbstractBeanFactory;
-import com.github.datalking.factory.AutowireCapableBeanFactory;
+import com.github.datalking.beans.factory.config.BeanDefinition;
+import com.github.datalking.beans.factory.support.AbstractBeanFactory;
+import com.github.datalking.beans.factory.config.AutowireCapableBeanFactory;
 import com.github.datalking.io.ResourceLoader;
-import com.github.datalking.xml.XmlBeanDefinitionReader;
+import com.github.datalking.beans.factory.xml.XmlBeanDefinitionReader;
 
 import java.util.Map;
 
 /**
+ * 读取xml配置的ApplicationContext
  */
 public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
 

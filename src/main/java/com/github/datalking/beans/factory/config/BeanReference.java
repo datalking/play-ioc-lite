@@ -1,4 +1,4 @@
-package com.github.datalking;
+package com.github.datalking.beans.factory.config;
 
 /**
  */

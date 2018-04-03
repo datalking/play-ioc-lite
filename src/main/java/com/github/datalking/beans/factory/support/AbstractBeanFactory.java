@@ -1,7 +1,8 @@
-package com.github.datalking.factory;
+package com.github.datalking.beans.factory.support;
 
 
-import com.github.datalking.BeanDefinition;
+import com.github.datalking.beans.factory.config.BeanDefinition;
+import com.github.datalking.beans.factory.BeanFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
