@@ -1,13 +1,18 @@
 # play-ioc-lite   
->简单可控的IoC容器    
+>简单可控的IoC容器  
 
 ## target
-- 简单易用
-- IoC基本功能
+- 支持IoC容器的基本功能
+- 使用方式与Spring相同
+- lite版不支持aop，[play-ioc](https://github.com/datalking/play-ioc)支持aop
 
-## note
-- 支持根据.properties配置文件或注解来加载类  
+## overview
+- 支持从xml中读取bean配置
+- 支持从注解中读取bean配置
+- 所有bean都采用延迟实例化，是为了解决循环依赖的问题
 - 仅支持单例对象  
+
+- 参考了 `org.springframework.beans` 包的实现和项目[tiny-spring](https://github.com/code4craft/tiny-spring)
 
 ## dev 
 ```sh
@@ -25,7 +30,10 @@ start from [http://localhost:8999](http://localhost:8999)
 
 ## todo
 
+- [ ] 抽象出 PropertyValues 做为接口   
+- [ ] 抽象出 BeanDefinition 做为接口   
 - [ ] 注解支持 `@Named`, `@Injected`   
+- [ ] 解决bean的循环依赖   
 
 - [x] 基本IoC
 
