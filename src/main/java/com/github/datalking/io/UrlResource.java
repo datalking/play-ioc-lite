@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 /**
+ * 通过url获取的资源
  */
 public class UrlResource implements Resource {
 
@@ -16,7 +17,7 @@ public class UrlResource implements Resource {
     }
 
     @Override
-    public InputStream getInputStream() throws IOException{
+    public InputStream getInputStream() throws IOException {
         URLConnection urlConnection = url.openConnection();
         urlConnection.connect();
         return urlConnection.getInputStream();

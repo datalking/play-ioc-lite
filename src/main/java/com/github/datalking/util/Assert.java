@@ -7,12 +7,18 @@ package com.github.datalking.util;
  */
 public interface Assert {
 
+
+    static void notNull(Object object, String message) {
+        if (object == null) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
     static void isNull(Object object, String message) {
         if (object != null) {
             throw new IllegalArgumentException(message);
         }
     }
-
 
     static void isNull(Object object) {
         isNull(object, "[Assertion failed] - the object argument must be null");

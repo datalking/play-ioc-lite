@@ -3,6 +3,7 @@ package com.github.datalking.io;
 import java.net.URL;
 
 /**
+ * 资源加载类
  */
 public class ResourceLoader {
 

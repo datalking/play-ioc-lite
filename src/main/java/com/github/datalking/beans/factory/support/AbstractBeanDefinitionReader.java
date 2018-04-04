@@ -12,20 +12,34 @@ import java.util.Map;
  */
 public abstract class AbstractBeanDefinitionReader implements BeanDefinitionReader {
 
-    private Map<String, BeanDefinition> registry;
+    private final BeanDefinitionRegistry registry;
 
     private ResourceLoader resourceLoader;
 
-    protected AbstractBeanDefinitionReader(ResourceLoader resourceLoader) {
-        this.registry = new HashMap<String, BeanDefinition>();
-        this.resourceLoader = resourceLoader;
+//    private Map<String, BeanDefinition> registry;
+
+    public AbstractBeanDefinitionReader(BeanDefinitionRegistry registry) {
+        this.registry = registry;
     }
 
-    public Map<String, BeanDefinition> getRegistry() {
-        return registry;
+    public AbstractBeanDefinitionReader(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+        //todo null
+        this.registry = null;
     }
 
     public ResourceLoader getResourceLoader() {
         return resourceLoader;
     }
+
+    public void setResourceLoader(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
+
+    @Override
+    public BeanDefinitionRegistry getRegistry() {
+        return registry;
+    }
+
+
 }

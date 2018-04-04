@@ -1,26 +1,19 @@
 package com.github.datalking.beans;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * 包装一个对象所有的PropertyValue。
- * 为什么封装而不是直接用List?因为可以封装一些操作。
+ * 多个属性值键值对接口
+ * 用于包装一个对象所有的PropertyValue
+ *
+ * @author yaoo on 4/3/18
  */
-public class PropertyValues {
+public interface PropertyValues {
 
-	private final List<PropertyValue> propertyValueList = new ArrayList<PropertyValue>();
+    PropertyValue[] getPropertyValues();
 
-	public PropertyValues() {
-	}
+    PropertyValue getPropertyValue(String propertyName);
 
-	public void addPropertyValue(PropertyValue pv) {
-        //TODO:这里可以对于重复propertyName进行判断，直接用list没法做到
-		this.propertyValueList.add(pv);
-	}
+    boolean contains(String propertyName);
 
-	public List<PropertyValue> getPropertyValues() {
-		return this.propertyValueList;
-	}
+    boolean isEmpty();
 
 }

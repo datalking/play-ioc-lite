@@ -1,38 +1,28 @@
 package com.github.datalking.beans.factory.config;
 
-
-import com.github.datalking.beans.PropertyValue;
-import com.github.datalking.beans.factory.support.AbstractBeanFactory;
-
-import java.lang.reflect.Field;
+import com.github.datalking.beans.factory.BeanFactory;
 
 /**
- * 可自动装配内容的BeanFactory
+ * 管理不受spring容器控制的bean
+ *
+ * @author yaoo on 4/3/18
  */
-public class AutowireCapableBeanFactory extends AbstractBeanFactory {
+public interface AutowireCapableBeanFactory extends BeanFactory {
 
-    @Override
-    protected Object doCreateBean(BeanDefinition beanDefinition) throws Exception {
-        Object bean = createBeanInstance(beanDefinition);
-        beanDefinition.setBean(bean);
-        applyPropertyValues(bean, beanDefinition);
-        return bean;
-    }
+    <T> T createBean(Class<T> beanClass) throws Exception;
 
-    protected Object createBeanInstance(BeanDefinition beanDefinition) throws Exception {
-        return beanDefinition.getBeanClass().newInstance();
-    }
+//    Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName);
+//    Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName);
+//    void applyBeanPropertyValues(Object existingBean, String beanName);
+//    Object autowire(Class<?> beanClass, int autowireMode, boolean dependencyCheck);
+//    void autowireBean(Object existingBean) ;
+//    void autowireBeanProperties(Object existingBean, int autowireMode, boolean dependencyCheck);
+//    Object configureBean(Object existingBean, String beanName) ;
+//
+//
+//    void destroyBean(Object existingBean);
+//    Object initializeBean(Object existingBean, String beanName);
+//    <T> NamedBeanHolder<T> resolveNamedBean(Class<T> requiredType);
 
-    protected void applyPropertyValues(Object bean, BeanDefinition mbd) throws Exception {
-        for (PropertyValue propertyValue : mbd.getPropertyValues().getPropertyValues()) {
-            Field declaredField = bean.getClass().getDeclaredField(propertyValue.getName());
-            declaredField.setAccessible(true);
-            Object value = propertyValue.getValue();
-            if (value instanceof BeanReference) {
-                BeanReference beanReference = (BeanReference) value;
-                value = getBean(beanReference.getName());
-            }
-            declaredField.set(bean, value);
-        }
-    }
+
 }

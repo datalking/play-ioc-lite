@@ -1,6 +1,5 @@
 package com.github.datalking.context;
 
-
 import com.github.datalking.beans.factory.BeanFactory;
 
 /**
@@ -14,5 +13,6 @@ public interface ApplicationContext extends BeanFactory {
 
     // long getStartupDate();
 
-    // AutowireCapableBeanFactory getAutowireCapableBeanFactory() throws IllegalStateException;
+    // AutowireCapableBeanFactory getAutowireCapableBeanFactory();
+
 }

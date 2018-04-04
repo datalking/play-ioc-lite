@@ -1,64 +1,28 @@
 package com.github.datalking.beans.factory.config;
 
-import com.github.datalking.beans.PropertyValues;
+import com.github.datalking.beans.MutablePropertyValues;
 
 /**
- * bean的内容及元数据，用来包装bean
- * <p>
- * 是BeanFactory中保存的对象
+ * java bean内容及属性元数据 根接口
+ *
+ * @author yaoo on 4/3/18
  */
-public class BeanDefinition {
+public interface BeanDefinition {
 
-    /**
-     * bean对象，为Object
-     */
-    private Object bean;
-    /**
-     * bean对应的class类
-     */
-    private Class beanClass;
+    String getBeanClassName();
 
-    private String beanClassName;
+    void setBeanClassName(String beanClassName);
 
-    private PropertyValues propertyValues = new PropertyValues();
+    MutablePropertyValues getPropertyValues();
 
-    public BeanDefinition() {
-    }
+//    boolean isLazyInit();
+//    void setLazyInit(boolean lazyInit);
+//
+//
+//    boolean isPrimary();
+//    boolean isAutowireCandidate();
+//    // bean是否是抽象类，若是，则不会创建实例
+//    boolean isAbstract();
 
-    public void setBean(Object bean) {
-        this.bean = bean;
-    }
 
-    public Class getBeanClass() {
-        return beanClass;
-    }
-
-    public void setBeanClass(Class beanClass) {
-        this.beanClass = beanClass;
-    }
-
-    public String getBeanClassName() {
-        return beanClassName;
-    }
-
-    public void setBeanClassName(String beanClassName) {
-        this.beanClassName = beanClassName;
-        try {
-            this.beanClass = Class.forName(beanClassName);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Object getBean() {
-        return bean;
-    }
-
-    public PropertyValues getPropertyValues() {
-        return propertyValues;
-    }
-
-    public void setPropertyValues(PropertyValues propertyValues) {
-        this.propertyValues = propertyValues;
-    }
 }
