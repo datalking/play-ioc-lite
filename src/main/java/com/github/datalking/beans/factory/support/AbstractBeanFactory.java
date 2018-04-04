@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * BeanFactory抽象类
  */
-public abstract class AbstractBeanFactory implements ConfigurableBeanFactory {
+public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
 
 
 //    private boolean cacheBeanMetadata = true;
@@ -47,22 +47,28 @@ public abstract class AbstractBeanFactory implements ConfigurableBeanFactory {
     @Override
     public Object getBean(String name) throws Exception {
 
-        BeanDefinition beanDefinition = beanDefinitionMap.get(name);
-        if (beanDefinition == null) {
-            throw new IllegalArgumentException("No bean named " + name + " is defined");
-        }
-        Object bean = beanDefinition.getBean();
+//        BeanDefinition beanDefinition = beanDefinitionMap.get(name);
+//        if (beanDefinition == null) {
+//            throw new IllegalArgumentException("No bean named " + name + " is defined");
+//        }
+//        Object bean = beanDefinition.getBean();
+//
+//        if (bean == null) {
+//            bean = doCreateBean(beanDefinition);
+//        }
 
-        if (bean == null) {
-            bean = doCreateBean(beanDefinition);
-        }
-
-        return bean;
+        return doGetBean(name,null,null,false);
     }
 
     protected <T> T doGetBean(final String name, final Class<T> requiredType, final Object[] args, boolean typeCheckOnly) {
 
+        Object targetBean;
 
+        Object sharedInstance = getSingleton(name);
+
+
+
+        return targetBean;
     }
 
 //
