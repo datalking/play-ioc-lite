@@ -3,7 +3,7 @@ package com.github.datalking.beans.factory.support;
 import com.github.datalking.io.Resource;
 
 /**
- * 从配置中读取BeanDefinitionReader
+ * 读取BeanDefinition的根接口
  */
 public interface BeanDefinitionReader {
 

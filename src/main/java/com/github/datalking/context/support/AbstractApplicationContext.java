@@ -1,14 +1,16 @@
 package com.github.datalking.context.support;
 
 
+import com.github.datalking.beans.factory.xml.XmlBeanDefinitionReader;
 import com.github.datalking.context.ApplicationContext;
 import com.github.datalking.beans.factory.support.AbstractBeanFactory;
+import com.github.datalking.io.ResourceLoader;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ApplicationContexto抽象类
+ * ApplicationContext 抽象类
  */
 public abstract class AbstractApplicationContext implements ApplicationContext {
 
@@ -31,4 +33,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     }
 
 
+    public AbstractBeanFactory getBeanFactory() {
+        return beanFactory;
+    }
 }

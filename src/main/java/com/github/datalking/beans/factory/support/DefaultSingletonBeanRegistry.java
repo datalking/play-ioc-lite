@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 生成的单例bean的容器
+ * 生成的单例bean的集合
  * ** 核心类 **
  *
  * @author yaoo on 4/4/18
@@ -50,6 +50,20 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
         }
     }
 
+    // 用于提前注册bean，避免循环依赖
+    protected void addSingletonFactory(String beanName, ObjectFactory<?> singletonFactory) throws Exception {
+        Assert.notNull(singletonFactory, "Singleton factory must not be null");
+        synchronized (this.singletonObjects) {
+            if (!this.singletonObjects.containsKey(beanName)) {
+                this.singletonObjects.put(beanName, (singletonFactory.getObject() != null ? singletonFactory.getObject() : NULL_OBJECT));
+
+//                this.singletonFactories.put(beanName, singletonFactory);
+//                this.earlySingletonObjects.remove(beanName);
+//                this.registeredSingletons.add(beanName);
+            }
+        }
+    }
+
     @Override
     public Object getSingleton(String beanName) {
         return getSingleton(beanName, true);
@@ -78,8 +92,13 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 
         Assert.notNull(beanName, "'beanName' must not be null");
         synchronized (this.singletonObjects) {
+//            for (Map.Entry entry : this.singletonObjects.entrySet()) {
+//                System.out.println(entry.getKey() + ", " + entry.getValue());
+//            }
             Object singletonObject = this.singletonObjects.get(beanName);
 
+            /// 若singletonObject为空，则再次获取
+            // todo 改为在延迟初始化的集合中获取
             if (singletonObject == null) {
                 boolean newSingleton = false;
                 try {

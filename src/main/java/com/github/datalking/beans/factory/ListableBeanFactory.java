@@ -4,6 +4,8 @@ import java.lang.annotation.Annotation;
 import java.util.Map;
 
 /**
+ * BeanFactory子接口 迭代操作
+ *
  * @author yaoo on 4/3/18
  */
 public interface ListableBeanFactory extends BeanFactory {

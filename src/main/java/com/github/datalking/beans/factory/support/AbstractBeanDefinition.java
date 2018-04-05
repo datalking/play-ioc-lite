@@ -6,11 +6,11 @@ import com.github.datalking.io.Resource;
 
 /**
  * BeanDefinition抽象类
+ * todo 实现clone
  *
  * @author yaoo on 4/3/18
  */
-//public abstract class AbstractBeanDefinition implements BeanDefinition, Cloneable {
-public abstract class AbstractBeanDefinition implements BeanDefinition {
+public abstract class AbstractBeanDefinition implements BeanDefinition, Cloneable {
 
     private volatile Object beanClass;
     private MutablePropertyValues propertyValues;
@@ -37,9 +37,9 @@ public abstract class AbstractBeanDefinition implements BeanDefinition {
         if (beanClassObject == null) {
             throw new IllegalStateException("No bean class specified on bean definition");
         }
+
         if (!(beanClassObject instanceof Class)) {
-            throw new IllegalStateException(
-                    "Bean class name [" + beanClassObject + "] has not been resolved into an actual Class");
+            throw new IllegalStateException("Bean class name [" + beanClassObject + "] has not been resolved into an actual Class");
         }
         return (Class<?>) beanClassObject;
     }

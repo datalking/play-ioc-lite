@@ -3,7 +3,7 @@ package com.github.datalking.beans;
 import java.beans.PropertyDescriptor;
 
 /**
- * 包装bean的接口
+ * 包装bean属性的接口
  *
  * @author yaoo on 4/3/18
  */

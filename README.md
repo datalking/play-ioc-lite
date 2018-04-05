@@ -12,9 +12,11 @@
 - 所有bean都采用延迟实例化，是为了解决循环依赖的问题
 - 仅支持单例对象 
 - 目前暂不支持：
+    - 不支持扫描指定包
     - 不支持构造注入与方法注入，仅支持属性注入
     - 不支持创建和使用自定义xml标签
     - 不支持xml格式校验和属性名校验，请手动检查
+    - 不支持FactoryBean
     - ...
 
 - 参考了 `org.springframework.beans` 包的实现和项目[tiny-spring](https://github.com/code4craft/tiny-spring)
@@ -35,6 +37,8 @@ start from [http://localhost:8999](http://localhost:8999)
 
 ## todo
 
+- [ ] 属性默认为字符串，类型转换   
+- [ ] 扫描指定包的bean   
 - [ ] xml bean元素支持id   
 - [ ] xml 支持constructor-args元素   
 - [ ] 支持别名   
@@ -70,6 +74,13 @@ start from [http://localhost:8999](http://localhost:8999)
   public class ApplicationContextConfig { }
 ```   
 - [ ] 迁移到以注解为主的使用方式
+
+## Architecture
+
+- BeanDefinition保存beanClass实际对象和属性
+- BeanDefinitionReader读取bean配置  
+    - 存储到DefaultListableBeanFactory的beanDefinitionMap
+    - 此时bean未实例化
 
 ## License
 

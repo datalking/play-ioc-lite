@@ -3,7 +3,7 @@ package com.github.datalking.beans.factory.config;
 import com.github.datalking.beans.MutablePropertyValues;
 
 /**
- * java bean内容及属性元数据 根接口
+ * bean内容及属性元数据定义 根接口
  *
  * @author yaoo on 4/3/18
  */

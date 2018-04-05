@@ -3,7 +3,9 @@ package com.github.datalking.beans.factory.config;
 import com.github.datalking.beans.factory.BeanFactory;
 
 /**
- * 管理不受spring容器控制的bean
+ * AutowireCapableBeanFactory 接口
+ * <p>
+ * 主要用于管理不受spring容器控制的bean
  *
  * @author yaoo on 4/3/18
  */

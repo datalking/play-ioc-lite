@@ -20,7 +20,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.InputStream;
 
 /**
- * 从xml文件中读取bean配置
+ * 从xml文件中读取BeanDefinition
  */
 public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
@@ -28,8 +28,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         super(registry);
     }
 
-    public XmlBeanDefinitionReader(ResourceLoader resourceLoader) {
-        super(resourceLoader);
+    public XmlBeanDefinitionReader(BeanDefinitionRegistry registry, ResourceLoader resourceLoader) {
+        super(registry, resourceLoader);
     }
 
     // 加载资源，将inputStream传递给doLoadBeanDefinitions()
@@ -67,7 +67,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
      *
      * @param doc xml文档对象
      */
-    public void registerBeanDefinitions(Document doc) {
+    public void registerBeanDefinitions(Document doc) throws ClassNotFoundException {
         //获取根元素
         Element root = doc.getDocumentElement();
 
@@ -80,11 +80,11 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
      *
      * @param root 根节点
      */
-    protected void parseBeanDefinitions(Element root) {
+    protected void parseBeanDefinitions(Element root) throws ClassNotFoundException {
 
-        NodeList nl = root.getChildNodes();
-        for (int i = 0; i < nl.getLength(); i++) {
-            Node node = nl.item(i);
+        NodeList nodeList = root.getChildNodes();
+        for (int i = 0, len = nodeList.getLength(); i < len; i++) {
+            Node node = nodeList.item(i);
             if (node instanceof Element) {
                 Element ele = (Element) node;
                 //对应spring的parseDefaultElement()中的processBeanDefinition()
@@ -94,19 +94,22 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     }
 
 
-    protected void processBeanDefinition(Element ele) {
+    protected void processBeanDefinition(Element ele) throws ClassNotFoundException {
 
+        // dataAnalyst
         String name = ele.getAttribute("name");
+        // com.github.datalking.bean.DataAnalyst
         String className = ele.getAttribute("class");
 
-        BeanDefinition beanDefinition = new GenericBeanDefinition();
+//        BeanDefinition beanDefinition = new GenericBeanDefinition();
+        GenericBeanDefinition beanDefinition = (GenericBeanDefinition) BeanDefinitionReaderUtils.createBeanDefinition(className, null);
 
         //为beanDefinition添加属性
         processProperty(ele, beanDefinition);
 
         beanDefinition.setBeanClassName(className);
 
-        BeanDefinitionHolder bdHolder = new BeanDefinitionHolder(beanDefinition,name);
+        BeanDefinitionHolder bdHolder = new BeanDefinitionHolder(beanDefinition, name);
 //        getRegistry().put(name, beanDefinition);
 
         BeanDefinitionReaderUtils.registerBeanDefinition(bdHolder, getRegistry());

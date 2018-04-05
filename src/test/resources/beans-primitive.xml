@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+
+    <bean name="beanAllStr" class="com.github.datalking.bean.BeanAllStr">
+        <property name="id" value="helloId"/>
+        <property name="name" value="helloName"/>
+        <property name="desc" value="no desc, B**ches"/>
+    </bean>
+
+    <bean name="dataAnalyst" class="com.github.datalking.bean.DataAnalyst">
+        <property name="name" value="helloName"/>
+        <property name="age" value="22"/>
+    </bean>
+
+</beans>
+

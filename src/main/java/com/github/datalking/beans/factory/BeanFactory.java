@@ -1,9 +1,7 @@
 package com.github.datalking.beans.factory;
 
 /**
- * bean容器
- * <p>
- * 根接口
+ * BeanFactory 根接口
  */
 public interface BeanFactory {
 

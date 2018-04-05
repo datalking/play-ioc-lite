@@ -1,6 +1,7 @@
 package com.github.datalking.beans.factory.support;
 
 import com.github.datalking.beans.PropertyValue;
+import com.github.datalking.beans.factory.ObjectFactory;
 import com.github.datalking.beans.factory.config.AutowireCapableBeanFactory;
 import com.github.datalking.beans.factory.config.BeanDefinition;
 import com.github.datalking.beans.factory.config.BeanReference;
@@ -8,6 +9,9 @@ import com.github.datalking.beans.factory.config.BeanReference;
 import java.lang.reflect.Field;
 
 /**
+ * BeanFactory抽象类
+ * 实际创建bean、装配属性
+ *
  * @author yaoo on 4/3/18
  */
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory
@@ -15,11 +19,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
     //private boolean allowCircularReferences = true;
 
-
     public AbstractAutowireCapableBeanFactory() {
         super();
     }
-
 
     @Override
     @SuppressWarnings("unchecked")
@@ -37,14 +39,25 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
     protected Object doCreateBean(final String beanName, final GenericBeanDefinition bd, final Object[] args) throws Exception {
 
+        // 调用无参构造函数新建bean实例
         Object bean = createBeanInstance(beanName, bd, args);
 //        beanDefinition.setBean(bean);
-        applyPropertyValues(bean, bd);
+
+        // 先注册bean对象引用
+        addSingletonFactory(beanName, () -> bean);
+
+        //注入属性
+        populateBean(beanName, bd, bean);
+
         return bean;
     }
 
     //    protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd, Object[] args) {
     protected Object createBeanInstance(String beanName, GenericBeanDefinition bd, Object[] args) throws Exception {
+
+        // 加载类
+        Class beanClass = doResolveBeanClass(bd);
+        bd.setBeanClass(beanClass);
 
         //todo 选择构造器
 
@@ -53,11 +66,24 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
     }
 
-
     protected Object instantiateBean(final String beanName, final GenericBeanDefinition bd) throws IllegalAccessException, InstantiationException {
 
         return bd.getBeanClass().newInstance();
 
+    }
+
+    protected void populateBean(String beanName, GenericBeanDefinition bd, Object bean) throws Exception {
+
+        applyPropertyValues(bean, bd);
+
+    }
+
+    private Class<?> doResolveBeanClass(GenericBeanDefinition bd) throws ClassNotFoundException {
+        String className = bd.getBeanClassName();
+        if (className != null) {
+            return Class.forName(className);
+        }
+        return null;
     }
 
 
@@ -83,11 +109,20 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
                 value = getBean(beanReference.getName());
             }
 
+            // 特殊处理整型字段
+            Class clazz=declaredField.getType();
+            if (clazz.getName().equals("java.lang.Integer")) {
+                declaredField.set(bean, Integer.valueOf(value.toString()));
+                continue;
+            }
+
             //将bean对象的declaredField字段设置为value
             declaredField.set(bean, value);
 
+
         }
     }
+
 
 //public Object createBean(Class<?> beanClass) throws BeansException {
 //protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] args) throws BeanCreationException {

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * PropertyValues的默认实现
+ * PropertyValues 默认实现类
  *
  * @author yaoo on 4/3/18
  */

@@ -1,5 +1,8 @@
 # faq for play-ioc
 
+
+- BeanFactory默认懒加载，只有调用getBean()时才创建实例 
+- ApplicationContext默认立即加载，通过主动调用getBean()来实现，只有ApplicationContext才能选择是否开启懒加载
 - 同时使用xml和注解注入bean的属性，谁的优先级更高？  
     - 当出现两个相同名称实例，spring会覆盖其中一个，xml优先级高于注解  
     - xml中同时配置两个相同id的bean，直接校验不通过报错

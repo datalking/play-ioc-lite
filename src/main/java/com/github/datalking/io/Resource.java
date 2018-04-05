@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Resource是spring内部定位资源的接口
+ * Resource是统一定位资源的接口
  */
 public interface Resource {
 

@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 从配置中读取BeanDefinitionReader
+ * 从配置中读取BeanDefinition 抽象类
  */
 public abstract class AbstractBeanDefinitionReader implements BeanDefinitionReader {
 
@@ -20,12 +20,13 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 
     public AbstractBeanDefinitionReader(BeanDefinitionRegistry registry) {
         this.registry = registry;
+        this.resourceLoader = new ResourceLoader();
     }
 
-    public AbstractBeanDefinitionReader(ResourceLoader resourceLoader) {
+    public AbstractBeanDefinitionReader(BeanDefinitionRegistry registry, ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
-        //todo null
-        this.registry = null;
+        this.registry = registry;
+
     }
 
     public ResourceLoader getResourceLoader() {

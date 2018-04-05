@@ -4,6 +4,7 @@ package com.github.datalking.context.support;
 import com.github.datalking.beans.factory.config.BeanDefinition;
 import com.github.datalking.beans.factory.support.AbstractBeanFactory;
 import com.github.datalking.beans.factory.config.AutowireCapableBeanFactory;
+import com.github.datalking.beans.factory.support.BeanDefinitionRegistry;
 import com.github.datalking.beans.factory.support.DefaultListableBeanFactory;
 import com.github.datalking.io.ResourceLoader;
 import com.github.datalking.beans.factory.xml.XmlBeanDefinitionReader;
@@ -35,13 +36,15 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
      */
     @Override
     public void refresh() throws Exception {
-        XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(new ResourceLoader());
+        XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(((BeanDefinitionRegistry) getBeanFactory()));
         xmlBeanDefinitionReader.loadBeanDefinitions(configLocation);
+//
+//        for (Map.Entry<String, BeanDefinition> beanDefinitionEntry : xmlBeanDefinitionReader.getRegistry().entrySet()) {
+//            beanFactory.registerBeanDefinition(beanDefinitionEntry.getKey(), beanDefinitionEntry.getValue());
+//        }
 
-        for (Map.Entry<String, BeanDefinition> beanDefinitionEntry : xmlBeanDefinitionReader.getRegistry().entrySet()) {
-            beanFactory.registerBeanDefinition(beanDefinitionEntry.getKey(), beanDefinitionEntry.getValue());
-        }
 
     }
+
 
 }

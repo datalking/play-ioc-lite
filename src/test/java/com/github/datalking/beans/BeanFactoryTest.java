@@ -1,9 +1,12 @@
 package com.github.datalking.beans;
 
+import com.github.datalking.bean.BeanAllStr;
+import com.github.datalking.bean.DataAnalyst;
 import com.github.datalking.bean.HelloWorldService;
 import com.github.datalking.beans.factory.config.BeanDefinition;
 import com.github.datalking.beans.factory.support.AbstractBeanFactory;
-import com.github.datalking.beans.factory.config.AutowireCapableBeanFactory;
+import com.github.datalking.beans.factory.support.BeanDefinitionRegistry;
+import com.github.datalking.beans.factory.support.DefaultListableBeanFactory;
 import com.github.datalking.io.ResourceLoader;
 import com.github.datalking.beans.factory.xml.XmlBeanDefinitionReader;
 import org.junit.Test;
@@ -18,38 +21,46 @@ public class BeanFactoryTest {
     @Test
     public void testLazy() throws Exception {
 
-        // 1.读取配置
-        XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(new ResourceLoader());
-        xmlBeanDefinitionReader.loadBeanDefinitions("beans.xml");
+        // 初始化BeanFactory并注册bean
+        AbstractBeanFactory beanFactory = new DefaultListableBeanFactory();
 
-        // 2.初始化BeanFactory并注册bean
-        AbstractBeanFactory beanFactory = new AutowireCapableBeanFactory();
-        for (Map.Entry<String, BeanDefinition> beanDefinitionEntry : xmlBeanDefinitionReader.getRegistry().entrySet()) {
-            beanFactory.registerBeanDefinition(beanDefinitionEntry.getKey(), beanDefinitionEntry.getValue());
-        }
+        // 读取配置
+        XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader((BeanDefinitionRegistry) beanFactory);
+        xmlBeanDefinitionReader.loadBeanDefinitions("beans-primitive.xml");
 
-        // 3.获取bean
-        HelloWorldService helloWorldService = (HelloWorldService) beanFactory.getBean("helloWorldService");
-        helloWorldService.helloWorld();
+
+//        for (String beanName : xmlBeanDefinitionReader.getRegistry().getBeanDefinitionNames()) {
+////            beanFactory.registerBeanDefinition(beanDefinitionEntry.getKey(), beanDefinitionEntry.getValue());
+//            ((BeanDefinitionRegistry)beanFactory).registerBeanDefinition(beanName,((DefaultListableBeanFactory) beanFactory).getBeanDefinition(beanName));
+//        }
+
+        ((DefaultListableBeanFactory) beanFactory).preInstantiateSingletons();
+
+        BeanAllStr beanAllStr = (BeanAllStr) beanFactory.getBean("beanAllStr");
+        System.out.println(beanAllStr);
+
+        DataAnalyst dataAnalyst = (DataAnalyst) beanFactory.getBean("dataAnalyst");
+        System.out.println(dataAnalyst);
+
     }
 
     @Test
     public void testPreInstantiate() throws Exception {
         // 1.读取配置
-        XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(new ResourceLoader());
-        xmlBeanDefinitionReader.loadBeanDefinitions("beans.xml");
+//        XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(new ResourceLoader());
+//        xmlBeanDefinitionReader.loadBeanDefinitions("beans.xml");
 
         // 2.初始化BeanFactory并注册bean
-        AbstractBeanFactory beanFactory = new AutowireCapableBeanFactory();
-        for (Map.Entry<String, BeanDefinition> beanDefinitionEntry : xmlBeanDefinitionReader.getRegistry().entrySet()) {
-            beanFactory.registerBeanDefinition(beanDefinitionEntry.getKey(), beanDefinitionEntry.getValue());
-        }
+//        AbstractBeanFactory beanFactory = new AutowireCapableBeanFactory();
+//        for (Map.Entry<String, BeanDefinition> beanDefinitionEntry : xmlBeanDefinitionReader.getRegistry().entrySet()) {
+//            beanFactory.registerBeanDefinition(beanDefinitionEntry.getKey(), beanDefinitionEntry.getValue());
+//        }
 
         // 3.初始化bean
-        beanFactory.preInstantiateSingletons();
+//        beanFactory.preInstantiateSingletons();
 
         // 4.获取bean
-        HelloWorldService helloWorldService = (HelloWorldService) beanFactory.getBean("helloWorldService");
-        helloWorldService.helloWorld();
+//        HelloWorldService helloWorldService = (HelloWorldService) beanFactory.getBean("helloWorldService");
+//        helloWorldService.helloWorld();
     }
 }

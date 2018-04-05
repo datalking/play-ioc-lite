@@ -14,7 +14,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 默认使用的BeanFactory实现类
+ * BeanFactory默认实现类
+ * ** 核心类 **
  *
  * @author yaoo on 4/3/18
  */
@@ -50,6 +51,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
         synchronized (this.beanDefinitionMap) {
             //存储beanDefinition到map
             this.beanDefinitionMap.put(beanName, beanDefinition);
+
             List<String> updatedDefinitions = new ArrayList<>(this.beanDefinitionNames.size() + 1);
             updatedDefinitions.addAll(this.beanDefinitionNames);
             updatedDefinitions.add(beanName);
@@ -82,9 +84,21 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
     }
 
     @Override
-    public void preInstantiateSingletons() {
+    public void preInstantiateSingletons() throws Exception {
+
+        List<String> beanNames = new ArrayList<>(this.beanDefinitionNames);
+
+        for (String beanName : beanNames) {
+            getBean(beanName);
+        }
 
     }
+//    public void preInstantiateSingletons() throws Exception {
+//        for (Iterator it = this.beanDefinitionNames.iterator(); it.hasNext(); ) {
+//            String beanName = (String) it.next();
+//            getBean(beanName);
+//        }
+//    }
 
     // ======== ListableBeanFactory interface ========
     @Override

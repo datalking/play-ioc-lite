@@ -1,6 +1,7 @@
 package com.github.datalking.beans.factory.config;
 
 /**
+ * 属性类型是对象的属性
  */
 public class BeanReference {
 

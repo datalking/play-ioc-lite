@@ -1,6 +1,8 @@
 package com.github.datalking.beans;
 
 /**
+ * 包装bean属性 实现类
+ *
  * @author yaoo on 4/3/18
  */
 public class BeanWrapperImpl implements BeanWrapper {
