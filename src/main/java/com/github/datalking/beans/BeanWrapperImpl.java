@@ -2,6 +2,7 @@ package com.github.datalking.beans;
 
 /**
  * 包装bean属性 实现类
+ * todo 可批量操作属性值，支持嵌套设置属性
  *
  * @author yaoo on 4/3/18
  */

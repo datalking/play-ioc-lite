@@ -12,11 +12,12 @@
 - 所有bean都采用延迟实例化，是为了解决循环依赖的问题
 - 仅支持单例对象 
 - 目前暂不支持：
-    - 不支持扫描指定包
+    - 不支持xml中指定扫描指定包，仅支持注解扫描指定包
     - 不支持构造注入与方法注入，仅支持属性注入
     - 不支持创建和使用自定义xml标签
     - 不支持xml格式校验和属性名校验，请手动检查
     - 不支持FactoryBean
+    - 不支持属性编辑器，仅自动转换基本类型对象，需要自行处理Date、File等字段
     - ...
 
 - 参考了 `org.springframework.beans` 包的实现和项目[tiny-spring](https://github.com/code4craft/tiny-spring)
@@ -37,6 +38,9 @@ start from [http://localhost:8999](http://localhost:8999)
 
 ## todo
 
+- [ ] 支持ref为 object   
+- [ ] getBean By class   
+- [ ] 解决循环依赖问题   
 - [ ] 属性默认为字符串，类型转换   
 - [ ] 扫描指定包的bean   
 - [ ] xml bean元素支持id   
@@ -51,6 +55,7 @@ start from [http://localhost:8999](http://localhost:8999)
 - [x] 基本IoC
 
 ## later
+- [ ] BeanAware接口   
 - [ ] BeanWrapper用于属性类型转换，暂未使用   
 - [ ] PropertyValues不支持合并   
 - [ ] 通过可选懒加载更优雅地解决bean的循环依赖问题   

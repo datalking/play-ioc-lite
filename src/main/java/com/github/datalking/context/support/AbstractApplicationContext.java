@@ -36,4 +36,5 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     public AbstractBeanFactory getBeanFactory() {
         return beanFactory;
     }
+
 }

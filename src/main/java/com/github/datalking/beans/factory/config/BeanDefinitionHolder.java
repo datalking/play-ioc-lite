@@ -3,6 +3,7 @@ package com.github.datalking.beans.factory.config;
 /**
  * BeanDefinition的包装类
  * 存放别名
+ * 仅库内部使用
  *
  * @author yaoo on 4/4/18
  */

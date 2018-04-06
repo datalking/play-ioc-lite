@@ -4,6 +4,7 @@ import com.github.datalking.beans.factory.config.BeanDefinition;
 
 /**
  * BeanDefinition 默认实现类
+ * 代替spring的ChildBeanDefinition和RootBeanDefinition
  *
  * @author yaoo on 4/3/18
  */

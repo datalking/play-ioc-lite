@@ -30,19 +30,19 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
     }
 
     /**
-     * 注册bean
+     * 读取配置文件并注册bean
      * <p>
-     * 默认采用延迟初始化
+     * 默认采用立即初始化
      */
     @Override
     public void refresh() throws Exception {
+
+        //读取xml配置并解析成BeanDefinition
         XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(((BeanDefinitionRegistry) getBeanFactory()));
         xmlBeanDefinitionReader.loadBeanDefinitions(configLocation);
-//
-//        for (Map.Entry<String, BeanDefinition> beanDefinitionEntry : xmlBeanDefinitionReader.getRegistry().entrySet()) {
-//            beanFactory.registerBeanDefinition(beanDefinitionEntry.getKey(), beanDefinitionEntry.getValue());
-//        }
 
+        //手动调用getBean()方法来触发实例化bean
+        ((DefaultListableBeanFactory) getBeanFactory()).preInstantiateSingletons();
 
     }
 

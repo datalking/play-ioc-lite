@@ -34,6 +34,7 @@ public class BeanFactoryTest {
 //            ((BeanDefinitionRegistry)beanFactory).registerBeanDefinition(beanName,((DefaultListableBeanFactory) beanFactory).getBeanDefinition(beanName));
 //        }
 
+        ///立即初始化
         ((DefaultListableBeanFactory) beanFactory).preInstantiateSingletons();
 
         BeanAllStr beanAllStr = (BeanAllStr) beanFactory.getBean("beanAllStr");

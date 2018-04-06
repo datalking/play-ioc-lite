@@ -38,6 +38,7 @@ public abstract class AbstractBeanDefinition implements BeanDefinition, Cloneabl
             throw new IllegalStateException("No bean class specified on bean definition");
         }
 
+        // 类尚未加载，抛出异常
         if (!(beanClassObject instanceof Class)) {
             throw new IllegalStateException("Bean class name [" + beanClassObject + "] has not been resolved into an actual Class");
         }

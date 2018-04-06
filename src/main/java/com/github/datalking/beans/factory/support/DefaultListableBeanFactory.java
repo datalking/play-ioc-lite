@@ -42,11 +42,6 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
     @Override
     public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition) {
-//        BeanDefinition oldBeanDefinition = this.beanDefinitionMap.get(beanName);
-//        if (oldBeanDefinition != null && !oldBeanDefinition.equals(beanDefinition)) {
-//            this.beanDefinitionMap.put(beanName, beanDefinition);
-//            return;
-//        }
 
         synchronized (this.beanDefinitionMap) {
             //存储beanDefinition到map
@@ -57,7 +52,6 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
             updatedDefinitions.add(beanName);
             this.beanDefinitionNames = updatedDefinitions;
         }
-
 
     }
 
