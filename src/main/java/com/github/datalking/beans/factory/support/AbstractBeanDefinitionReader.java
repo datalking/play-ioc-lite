@@ -18,16 +18,23 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 
 //    private Map<String, BeanDefinition> registry;
 
-    public AbstractBeanDefinitionReader(BeanDefinitionRegistry registry) {
-        this.registry = registry;
-        this.resourceLoader = new ResourceLoader();
-    }
-
     public AbstractBeanDefinitionReader(BeanDefinitionRegistry registry, ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
         this.registry = registry;
 
     }
+
+    public AbstractBeanDefinitionReader(BeanDefinitionRegistry registry) {
+        this.registry = registry;
+        this.resourceLoader = new ResourceLoader();
+    }
+
+    @Deprecated
+    public AbstractBeanDefinitionReader(ResourceLoader resourceLoader) {
+        this.registry = new DefaultListableBeanFactory();
+        this.resourceLoader = new ResourceLoader();
+    }
+
 
     public ResourceLoader getResourceLoader() {
         return resourceLoader;

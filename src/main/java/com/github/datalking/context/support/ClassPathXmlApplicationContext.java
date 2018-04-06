@@ -2,6 +2,7 @@ package com.github.datalking.context.support;
 
 
 import com.github.datalking.beans.factory.config.BeanDefinition;
+import com.github.datalking.beans.factory.config.ConfigurableListableBeanFactory;
 import com.github.datalking.beans.factory.support.AbstractBeanFactory;
 import com.github.datalking.beans.factory.config.AutowireCapableBeanFactory;
 import com.github.datalking.beans.factory.support.BeanDefinitionRegistry;
@@ -41,8 +42,7 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
         XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(((BeanDefinitionRegistry) getBeanFactory()));
         xmlBeanDefinitionReader.loadBeanDefinitions(configLocation);
 
-        //手动调用getBean()方法来触发实例化bean
-        ((DefaultListableBeanFactory) getBeanFactory()).preInstantiateSingletons();
+        finishBeanFactoryInitialization((ConfigurableListableBeanFactory) beanFactory);
 
     }
 

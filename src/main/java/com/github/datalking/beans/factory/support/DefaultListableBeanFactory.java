@@ -22,9 +22,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory
         implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable {
 
-    //所有BeanDefinition
+    /**
+     * 所有BeanDefinition
+     */
     private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(256);
-    //所有bean名称
+    /**
+     * 所有bean名称
+     */
     private volatile List<String> beanDefinitionNames = new ArrayList<>(256);
 
 
@@ -40,6 +44,12 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
     // ======== BeanDefinitionRegistry interface ========
 
+    /**
+     * 注册beanDefinition到beanDefinitionMap
+     *
+     * @param beanName       bean名称
+     * @param beanDefinition bean属性元信息对象
+     */
     @Override
     public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition) {
 
@@ -77,6 +87,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
         return bd;
     }
 
+    /**
+     * 通过调用getBean()触发实例化bean
+     */
     @Override
     public void preInstantiateSingletons() throws Exception {
 

@@ -29,11 +29,6 @@ public class BeanFactoryTest {
         xmlBeanDefinitionReader.loadBeanDefinitions("beans-primitive.xml");
 
 
-//        for (String beanName : xmlBeanDefinitionReader.getRegistry().getBeanDefinitionNames()) {
-////            beanFactory.registerBeanDefinition(beanDefinitionEntry.getKey(), beanDefinitionEntry.getValue());
-//            ((BeanDefinitionRegistry)beanFactory).registerBeanDefinition(beanName,((DefaultListableBeanFactory) beanFactory).getBeanDefinition(beanName));
-//        }
-
         ///立即初始化
         ((DefaultListableBeanFactory) beanFactory).preInstantiateSingletons();
 
@@ -47,6 +42,7 @@ public class BeanFactoryTest {
 
     @Test
     public void testPreInstantiate() throws Exception {
+
         // 1.读取配置
 //        XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(new ResourceLoader());
 //        xmlBeanDefinitionReader.loadBeanDefinitions("beans.xml");
@@ -64,4 +60,5 @@ public class BeanFactoryTest {
 //        HelloWorldService helloWorldService = (HelloWorldService) beanFactory.getBean("helloWorldService");
 //        helloWorldService.helloWorld();
     }
+
 }

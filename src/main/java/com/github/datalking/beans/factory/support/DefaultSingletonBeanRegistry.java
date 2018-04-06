@@ -70,6 +70,13 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 
     }
 
+    /**
+     * 通过beanName获取bean实例
+     *
+     * @param beanName            bean名称
+     * @param allowEarlyReference 是否允许提前曝光
+     * @return bean实例
+     */
     protected Object getSingleton(String beanName, boolean allowEarlyReference) {
         Object singletonObject = this.singletonObjects.get(beanName);
 //        if (singletonObject == null) {

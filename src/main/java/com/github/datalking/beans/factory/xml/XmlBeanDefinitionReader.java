@@ -32,6 +32,12 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         super(registry, resourceLoader);
     }
 
+    //仅用于单元测试
+    @Deprecated
+    public XmlBeanDefinitionReader(ResourceLoader resourceLoader) {
+        super(resourceLoader);
+    }
+
     // 加载资源，将inputStream传递给doLoadBeanDefinitions()
     @Override
     public void loadBeanDefinitions(String location) throws Exception {
@@ -85,6 +91,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         NodeList nodeList = root.getChildNodes();
         for (int i = 0, len = nodeList.getLength(); i < len; i++) {
             Node node = nodeList.item(i);
+
+            // 解析Element类型的节点
             if (node instanceof Element) {
                 Element ele = (Element) node;
                 //对应spring的parseDefaultElement()中的processBeanDefinition()
@@ -94,29 +102,37 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     }
 
 
+    /**
+     * 解析并创建BeanDefinition，并注入属性
+     *
+     * @param ele 节点
+     */
     protected void processBeanDefinition(Element ele) throws ClassNotFoundException {
 
-        // dataAnalyst
         String name = ele.getAttribute("name");
-        // com.github.datalking.bean.DataAnalyst
+        // className示例 com.github.datalking.bean.BeanAllStr
         String className = ele.getAttribute("class");
 
-//        BeanDefinition beanDefinition = new GenericBeanDefinition();
+        //BeanDefinition beanDefinition = new GenericBeanDefinition();
+        // 此时仅创建 BeanDefinition，不加载类
         GenericBeanDefinition beanDefinition = (GenericBeanDefinition) BeanDefinitionReaderUtils.createBeanDefinition(className, null);
+        // beanDefinition.setBeanClassName(className);
 
         //为beanDefinition添加属性
         processProperty(ele, beanDefinition);
 
-        beanDefinition.setBeanClassName(className);
-
+        // 包装beanDefinition的名称和别名
         BeanDefinitionHolder bdHolder = new BeanDefinitionHolder(beanDefinition, name);
-//        getRegistry().put(name, beanDefinition);
 
+        //getRegistry().put(name, beanDefinition);
+        // 注册到beanDefinitionMap，引用类型字段注册的是字符串
         BeanDefinitionReaderUtils.registerBeanDefinition(bdHolder, getRegistry());
 
     }
 
-    //为beanDefinition解析并添加属性
+    /**
+     * 解析xml并为beanDefinition添加属性
+     */
     private void processProperty(Element ele, BeanDefinition beanDefinition) {
 
         NodeList propertyNode = ele.getElementsByTagName("property");
@@ -128,17 +144,24 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                 String name = propertyEle.getAttribute("name");
                 String value = propertyEle.getAttribute("value");
 
+                ///如果value非空
                 if (value != null && value.length() > 0) {
                     beanDefinition.getPropertyValues().addPropertyValue(new PropertyValue(name, value));
-                } else {
+
+                }
+                ///如果value为空，就检查ref属性
+                else {
                     String ref = propertyEle.getAttribute("ref");
                     if (ref == null || ref.length() == 0) {
                         throw new IllegalArgumentException("Configuration problem: <property> element for property '"
                                 + name + "' must specify a ref or value");
                     }
+
                     BeanReference beanReference = new BeanReference(ref);
                     beanDefinition.getPropertyValues().addPropertyValue(new PropertyValue(name, beanReference));
+
                 }
+
             }
         }
     }

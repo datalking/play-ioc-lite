@@ -66,6 +66,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
     }
 
+    /**
+     * 通过jdk反射生成bean实例
+     * spring对调用无参构造函数生成实例使用的是cglib
+     */
     protected Object instantiateBean(final String beanName, final GenericBeanDefinition bd) throws IllegalAccessException, InstantiationException {
 
         return bd.getBeanClass().newInstance();
@@ -88,7 +92,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 
     /**
-     * 将BeanDefinition的属性添加到bean对象
+     * 将BeanDefinition的属性注入到bean实例
+     * todo 注解处理
      *
      * @param bean 待添加属性的对象
      * @param bd   要添加的属性定义
@@ -102,7 +107,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             declaredField.setAccessible(true);
             Object value = propertyValue.getValue();
 
-            //如果value为引用类型
+            //特殊处理引用类型字段
             if (value instanceof BeanReference) {
                 BeanReference beanReference = (BeanReference) value;
                 //初始化依赖的对象
@@ -110,7 +115,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             }
 
             // 特殊处理整型字段
-            Class clazz=declaredField.getType();
+            Class clazz = declaredField.getType();
             if (clazz.getName().equals("java.lang.Integer")) {
                 declaredField.set(bean, Integer.valueOf(value.toString()));
                 continue;
@@ -118,7 +123,6 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
             //将bean对象的declaredField字段设置为value
             declaredField.set(bean, value);
-
 
         }
     }
@@ -128,8 +132,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 //protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] args) throws BeanCreationException {
 //protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final Object[] args)
 //protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd, Object[] args) {
-//protected void populateBean(String beanName, RootBeanDefinition mbd, BeanWrapper bw) {
 
+//protected void populateBean(String beanName, RootBeanDefinition mbd, BeanWrapper bw) {
 
 //public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName)
 //public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName)

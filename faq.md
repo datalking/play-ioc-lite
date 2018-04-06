@@ -1,6 +1,10 @@
 # faq for play-ioc
 
+## play-ioc支持的spring常用配置标签
+- [x] property   
 
+- [ ] constructor
+   
 ## BeanDefinition
 - GenericBeanDefinition暂不支持父子结构，短期内不会实现
 - RootBeanDefinition定义表明它是一个可合并的bean definition，不会单独实现，使用GenericBeanDefinition也可实现  
@@ -13,7 +17,6 @@
     - 当出现两个相同名称实例，spring会覆盖其中一个，xml优先级高于注解  
     - xml中同时配置两个相同id的bean，直接校验不通过报错
     -  多次注入同一个bean的，如果beanName不一样的话，那么会产生两个Bean；如果beanName一样的话，后面注入的会覆盖前面的
-- spring对于没有无参构造器的bean就利用CGLIB生成实例，否则就直接反射成实例
   
 
 

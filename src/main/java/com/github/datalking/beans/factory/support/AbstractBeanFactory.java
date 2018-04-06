@@ -55,16 +55,6 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     @Override
     public Object getBean(String name) throws Exception {
 
-//        BeanDefinition beanDefinition = beanDefinitionMap.get(name);
-//        if (beanDefinition == null) {
-//            throw new IllegalArgumentException("No bean named " + name + " is defined");
-//        }
-//        Object bean = beanDefinition.getBean();
-//
-//        if (bean == null) {
-//            bean = doCreateBean(beanDefinition);
-//        }
-
         return doGetBean(name, null, null, false);
     }
 

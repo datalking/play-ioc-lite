@@ -9,12 +9,16 @@
 ## overview
 - 支持从xml中读取bean配置
 - 支持从注解中读取bean配置
-- 所有bean都采用延迟实例化，是为了解决循环依赖的问题
-- 仅支持单例对象 
+- ApplicationContext加载bean采用立即初始化
+- 仅支持单例bean
 - 目前暂不支持：
+    - 不支持为bean指定别名
     - 不支持xml中指定扫描指定包，仅支持注解扫描指定包
     - 不支持构造注入与方法注入，仅支持属性注入
-    - 不支持创建和使用自定义xml标签
+    - 不支持创建和使用除 `spring常用配置标签` 外的自定义xml标签
+    - 不支持将嵌套子元素作为属性，仅支持统一使用扁平方式指定属性  
+        - `<property name="id" value="helloId"/>`
+        - [x] `<property name="id"> <value="helloId"></value> </property>`   
     - 不支持xml格式校验和属性名校验，请手动检查
     - 不支持FactoryBean
     - 不支持属性编辑器，仅自动转换基本类型对象，需要自行处理Date、File等字段
@@ -39,9 +43,9 @@ start from [http://localhost:8999](http://localhost:8999)
 ## todo
 
 - [ ] 支持ref为 object   
-- [ ] getBean By class   
 - [ ] 解决循环依赖问题   
-- [ ] 属性默认为字符串，类型转换   
+- [ ] getBean By class   
+- [ ] 属性默认为字符串，实现基本类型自动转换   
 - [ ] 扫描指定包的bean   
 - [ ] xml bean元素支持id   
 - [ ] xml 支持constructor-args元素   
@@ -50,6 +54,7 @@ start from [http://localhost:8999](http://localhost:8999)
 - [ ] xml中同名bean抛出异常   
 - [ ] 注解支持 `@Named`, `@Injected`   
 
+- [x] ApplicationContext默认立即初始化   
 - [x] 抽象出 BeanDefinition 作为接口   
 - [x] 抽象出 PropertyValues 作为接口   
 - [x] 基本IoC
