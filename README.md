@@ -9,16 +9,19 @@
 ## overview
 - 支持从xml中读取bean配置
 - 支持从注解中读取bean配置
-- ApplicationContext加载bean采用立即初始化
-- 仅支持单例bean
+- ApplicationContext加载bean采用立即初始化，暂不支持懒加载控制
+- 仅支持单例bean，不支持多实例
 - 目前暂不支持：
+    - 不支持将bean的value类型配置为set,list,map，仅支持字符串和ref  
     - 不支持为bean指定别名
     - 不支持xml中指定扫描指定包，仅支持注解扫描指定包
     - 不支持构造注入与方法注入，仅支持属性注入
     - 不支持创建和使用除 `spring常用配置标签` 外的自定义xml标签
     - 不支持将嵌套子元素作为属性，仅支持统一使用扁平方式指定属性  
+        - 不支持innerBean的写法，建议扁平化定义bean，使用ref属性引用其他bean
         - `<property name="id" value="helloId"/>`
         - [x] `<property name="id"> <value="helloId"></value> </property>`   
+        - [x] `<property name="person"> <bean class="a.b.Person.class"></bean> </property>`   
     - 不支持xml格式校验和属性名校验，请手动检查
     - 不支持FactoryBean
     - 不支持属性编辑器，仅自动转换基本类型对象，需要自行处理Date、File等字段
@@ -62,6 +65,7 @@ start from [http://localhost:8999](http://localhost:8999)
 ## later
 - [ ] BeanAware接口   
 - [ ] BeanWrapper用于属性类型转换，暂未使用   
+- [ ] 支持将bean的value类型配置为set,list   
 - [ ] PropertyValues不支持合并   
 - [ ] 通过可选懒加载更优雅地解决bean的循环依赖问题   
 - [ ] MutablePropertyValues processedProperties  

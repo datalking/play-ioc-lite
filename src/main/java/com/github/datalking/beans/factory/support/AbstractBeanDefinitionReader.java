@@ -49,5 +49,9 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
         return registry;
     }
 
+    public String generateBeanName(BeanDefinition bd) {
+        return BeanDefinitionReaderUtils.generateBeanName(bd, this.registry);
+    }
+
 
 }

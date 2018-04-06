@@ -1,5 +1,6 @@
 package com.github.datalking.beans.factory.support;
 
+import com.github.datalking.beans.factory.config.BeanDefinition;
 import com.github.datalking.beans.factory.config.BeanDefinitionHolder;
 import com.github.datalking.util.Assert;
 
@@ -9,6 +10,11 @@ import com.github.datalking.util.Assert;
  * @author yaoo on 4/4/18
  */
 public class BeanDefinitionReaderUtils {
+
+    /**
+     * bean名称中字母与计数的分隔符号
+     */
+    public static final String GENERATED_BEAN_NAME_SEPARATOR = "#";
 
     /**
      * 创建BeanDefinition实例
@@ -48,6 +54,32 @@ public class BeanDefinitionReaderUtils {
 //                registry.registerAlias(beanName, alias);
 //            }
 //        }
+    }
+
+    /**
+     * 默认bean名称生成器
+     *
+     * @param beanDefinition bd
+     * @param registry       所有单例bean注册表
+     * @return bean名称
+     */
+    public static String generateBeanName(BeanDefinition beanDefinition, BeanDefinitionRegistry registry) {
+
+        String generatedBeanName = beanDefinition.getBeanClassName();
+        if (generatedBeanName == null || generatedBeanName.trim().length() == 0) {
+            generatedBeanName = "$randomBeanName";
+        }
+
+        String id = generatedBeanName;
+
+        int counter = 0;
+        while (counter == 0 || registry.containsBeanDefinition(id)) {
+            counter++;
+            id = generatedBeanName + GENERATED_BEAN_NAME_SEPARATOR + counter;
+        }
+
+        return id;
+
     }
 
 

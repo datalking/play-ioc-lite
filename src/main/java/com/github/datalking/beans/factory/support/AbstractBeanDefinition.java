@@ -14,10 +14,11 @@ public abstract class AbstractBeanDefinition implements BeanDefinition, Cloneabl
 
     private volatile Object beanClass;
     private MutablePropertyValues propertyValues;
+    private boolean lazyInit = false;
 
+//    private String initMethodName;
 //    private Resource resource;
 //    private boolean abstractFlag = false;
-//    private boolean lazyInit = false;
 
     protected AbstractBeanDefinition(BeanDefinition original) {
         setBeanClassName(original.getBeanClassName());
@@ -59,6 +60,8 @@ public abstract class AbstractBeanDefinition implements BeanDefinition, Cloneabl
         }
     }
 
+
+
     @Override
     public void setBeanClassName(String beanClassName) {
         this.beanClass = beanClassName;
@@ -76,6 +79,17 @@ public abstract class AbstractBeanDefinition implements BeanDefinition, Cloneabl
     public void setPropertyValues(MutablePropertyValues propertyValues) {
         this.propertyValues = (propertyValues != null ? propertyValues : new MutablePropertyValues());
     }
+
+    @Override
+    public boolean isLazyInit() {
+        return this.lazyInit;
+    }
+
+    @Override
+    public void setLazyInit(boolean lazyInit) {
+        this.lazyInit = lazyInit;
+    }
+
 
 
 }

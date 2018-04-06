@@ -3,8 +3,22 @@ Spring笔记
 
 ## summary
 
+- spring bean配置不同类型方法的执行顺序，从先到后：
+    - postProcessBeforeInitialization
+    - afterPropertiesSet
+    - init-method
+    - postProcessAfterInitialization
+- spring doCreateBean()方法中3个重要的任务
+    - 创建实例：createBeanInstance(beanName, mbd, args); -> BeanWrapper
+    - 注入属性：populateBean(beanName, mbd, instanceWrapper); -> void
+    - 执行初始化方法：initializeBean(beanName, exposedObject, mbd); -> Object(bean instance)    
+        - 先执行实现了InitializingBean接口的afterPropertiesSet()，再执行配置的init-method名称的方法
+
 - spring autowired 注入方式
     -@Autowired默认通过byType注入，若存在多个实现类，byType有歧义，则需通过byName的方式来注入，name默认就是根据变量名来的
+    - @Autowired只有required属性可以设置，默认为true
+    - 如果想通过指定具体的bean的名称，可以使用@Qualifier
+    - @Autowired的解析器是AutowiredAnnotationBeanPostProcessor
     
 - PropertyEditor  
     - 由于Bean属性通过配置文档以字符串了方式为属性赋值，属性编辑器负责将这个字符串转换为属性的直接对象，如属性的类型为int，那编辑器的工作就是 `int i = Integer.parseInt("1");` 

@@ -1,0 +1,35 @@
+package com.github.datalking.beans.factory.config;
+
+/**
+ * ref属性的引用占位符
+ *
+ * @author yaoo on 4/6/18
+ */
+public class RuntimeBeanReference {
+
+    private final String beanName;
+    private Object source;
+//    private final boolean toParent;
+
+
+    /**
+     * @param beanName 所依赖的beanName
+     */
+    public RuntimeBeanReference(String beanName) {
+        this.beanName = beanName;
+    }
+
+    public String getBeanName() {
+        return this.beanName;
+    }
+
+    public void setSource(Object source) {
+        this.source = source;
+    }
+
+    public Object getSource() {
+        return this.source;
+    }
+
+
+}

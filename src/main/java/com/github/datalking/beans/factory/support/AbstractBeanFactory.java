@@ -60,7 +60,10 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
     protected <T> T doGetBean(final String name, final Class<T> requiredType, final Object[] args, boolean typeCheckOnly) throws Exception {
 
-        /// 如果name已存在，则直接返回bean
+        //将别名解析为bean唯一名称
+        //final String name = transformedBeanName(name);
+
+        /// 如果name对应的bean实例已存在，则直接返回bean
         Object sharedInstance = getSingleton(name);
         if (sharedInstance != null && args == null) {
             return (T) sharedInstance;
@@ -70,8 +73,12 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         Object targetBean;
         ///todo 先检查并创建name所依赖的bean
 
+        GenericBeanDefinition bd = (GenericBeanDefinition) getBeanDefinition(name);
+        //合并beanDefinition
+        // bd = getMergedLocalBeanDefinition(beanName);
+
         ///再创建单例bean
-        Object bean = createBean(name, (GenericBeanDefinition) getBeanDefinition(name), args);
+        Object bean = createBean(name, bd, args);
         targetBean = getSingleton(name, (ObjectFactory) () -> bean);
 
         //写成下面这样会异常，createBean()未执行，会先执行getSingleton()
