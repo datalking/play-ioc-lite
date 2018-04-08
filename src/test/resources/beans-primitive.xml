@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans top="beansAttr">
+<beans>
     <bean name="beanAllStr" class="com.github.datalking.bean.BeanAllStr">
         <property name="id" value="helloId"/>
         <property name="name" value="helloName"/>

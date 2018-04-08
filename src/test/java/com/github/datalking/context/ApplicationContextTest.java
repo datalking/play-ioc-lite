@@ -2,7 +2,6 @@ package com.github.datalking.context;
 
 import com.github.datalking.bean.BeanAllStr;
 import com.github.datalking.bean.DataAnalyst;
-import com.github.datalking.bean.HelloWorldService;
 import com.github.datalking.context.support.ClassPathXmlApplicationContext;
 import org.junit.Test;
 

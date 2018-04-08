@@ -2,16 +2,11 @@ package com.github.datalking.beans;
 
 import com.github.datalking.bean.BeanAllStr;
 import com.github.datalking.bean.DataAnalyst;
-import com.github.datalking.bean.HelloWorldService;
-import com.github.datalking.beans.factory.config.BeanDefinition;
 import com.github.datalking.beans.factory.support.AbstractBeanFactory;
 import com.github.datalking.beans.factory.support.BeanDefinitionRegistry;
 import com.github.datalking.beans.factory.support.DefaultListableBeanFactory;
-import com.github.datalking.io.ResourceLoader;
 import com.github.datalking.beans.factory.xml.XmlBeanDefinitionReader;
 import org.junit.Test;
-
-import java.util.Map;
 
 /**
  * 直接使用BeanFactory作为容器的示例

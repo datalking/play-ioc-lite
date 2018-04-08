@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 解析xml属性代理类
+ * 解析xml元素属性代理类
+ * ** 核心类 **
  *
  * @author yaoo on 4/6/18
  */
@@ -58,6 +59,7 @@ public class BeanDefinitionParserDelegate {
         return BeanDefinitionReaderUtils.createBeanDefinition(className, this.getClass().getClassLoader());
 
     }
+
 
     public BeanDefinitionHolder parseBeanDefinitionElement(Element ele) throws Exception {
 
@@ -131,13 +133,16 @@ public class BeanDefinitionParserDelegate {
     }
 
     public void parsePropertyElements(Element beanEle, BeanDefinition bd) throws Exception {
+
         NodeList nl = beanEle.getChildNodes();
+
         for (int i = 0; i < nl.getLength(); i++) {
             Node node = nl.item(i);
             if (node instanceof Element && PROPERTY_ELEMENT.equals(node.getNodeName())) {
                 parsePropertyElement((Element) node, bd);
             }
         }
+
     }
 
     public void parsePropertyElement(Element ele, BeanDefinition bd) throws Exception {
@@ -183,13 +188,15 @@ public class BeanDefinitionParserDelegate {
             }
 
             RuntimeBeanReference ref = new RuntimeBeanReference(refName);
+            // 设置ref bean的依赖
+            ref.setSource(bd.getBeanClassName());
 
             return ref;
 
         }
         /// 如果是value属性，转化成String
         else if (hasValueAttribute) {
-            //
+            // spring使用的是 TypedStringValue
             String valueHolder = ele.getAttribute(VALUE_ATTRIBUTE);
 
             return valueHolder;

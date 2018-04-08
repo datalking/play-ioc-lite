@@ -74,7 +74,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
      *
      * @param doc xml文档对象
      */
-    public void registerBeanDefinitions(Document doc, BeanDefinitionReader bdReader) throws ClassNotFoundException {
+    public void registerBeanDefinitions(Document doc, BeanDefinitionReader bdReader) throws Exception {
 
         BeanDefinitionDocumentReader documentReader = new DefaultBeanDefinitionDocumentReader();
         documentReader.registerBeanDefinitions(doc, bdReader);
@@ -113,7 +113,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
      *
      * @param ele 节点
      */
-    protected void processBeanDefinition(Element ele) throws ClassNotFoundException {
+    private void processBeanDefinition(Element ele) throws ClassNotFoundException {
 
         // todo name/id可选
         //对应于spring BeanDefinitionParserDelegate类的parseBeanDefinitionElement()
@@ -121,7 +121,6 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         // className示例 com.github.datalking.bean.BeanAllStr
         String className = ele.getAttribute("class");
 
-        //BeanDefinition beanDefinition = new GenericBeanDefinition();
         // 此时仅创建 BeanDefinition，不加载类
         GenericBeanDefinition beanDefinition = (GenericBeanDefinition) BeanDefinitionReaderUtils.createBeanDefinition(className, null);
 
@@ -131,7 +130,6 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         // 包装beanDefinition的名称和别名
         BeanDefinitionHolder bdHolder = new BeanDefinitionHolder(beanDefinition, name);
 
-        //getRegistry().put(name, beanDefinition);
         // 对应于spring DefaultBeanDefinitionDocumentReader类的registerBeanDefinitions()方法
         // 注册到beanDefinitionMap，引用类型字段注册的是字符串
         BeanDefinitionReaderUtils.registerBeanDefinition(bdHolder, getRegistry());

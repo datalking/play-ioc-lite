@@ -35,6 +35,28 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
         }
     }
 
+    public MutablePropertyValues(List<PropertyValue> propertyValueList) {
+        this.propertyValueList = (propertyValueList != null ? propertyValueList : new ArrayList<>());
+    }
+
+    public List<PropertyValue> getPropertyValueList() {
+        return this.propertyValueList;
+    }
+
+    public int size() {
+        return this.propertyValueList.size();
+    }
+
+    public MutablePropertyValues addPropertyValues(PropertyValues other) {
+        if (other != null) {
+            PropertyValue[] pvs = other.getPropertyValues();
+            for (PropertyValue pv : pvs) {
+                addPropertyValue(new PropertyValue(pv));
+            }
+        }
+        return this;
+    }
+
     public MutablePropertyValues addPropertyValue(String propertyName, Object propertyValue) {
         return addPropertyValue(new PropertyValue(propertyName, propertyValue));
     }
@@ -52,6 +74,14 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
         //若不存在同名，添加kv
         this.propertyValueList.add(kv);
         return this;
+    }
+
+    public void removePropertyValue(PropertyValue pv) {
+        this.propertyValueList.remove(pv);
+    }
+
+    public void removePropertyValue(String propertyName) {
+        this.propertyValueList.remove(getPropertyValue(propertyName));
     }
 
     @Override

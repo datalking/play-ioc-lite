@@ -13,8 +13,13 @@ import com.github.datalking.io.Resource;
 public abstract class AbstractBeanDefinition implements BeanDefinition, Cloneable {
 
     private volatile Object beanClass;
+
     private MutablePropertyValues propertyValues;
+
+    // 懒加载默认false
     private boolean lazyInit = false;
+
+    private String[] dependsOn;
 
 //    private String initMethodName;
 //    private Resource resource;
@@ -61,7 +66,6 @@ public abstract class AbstractBeanDefinition implements BeanDefinition, Cloneabl
     }
 
 
-
     @Override
     public void setBeanClassName(String beanClassName) {
         this.beanClass = beanClassName;
@@ -90,6 +94,22 @@ public abstract class AbstractBeanDefinition implements BeanDefinition, Cloneabl
         this.lazyInit = lazyInit;
     }
 
+    @Override
+    public void setDependsOn(String... dependsOn) {
+        this.dependsOn = dependsOn;
+    }
 
+    /**
+     * Return the bean names that this bean depends on.
+     */
+    @Override
+    public String[] getDependsOn() {
+        return this.dependsOn;
+    }
+
+    @Override
+    public boolean isSingleton() {
+        return true;
+    }
 
 }

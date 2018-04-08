@@ -3,6 +3,17 @@ java笔记
 
 ## summary
 
+
+- java 安全管理器
+    - AccessController.doPrivileged意思是这个是特别的,不用做权限检查，使用场景：
+        - 假如1.jar中有类可以读取一个文件，但是我们的类本生是没有权限去读取那个文件的，在1.jar中如果读取文件的方法是通过doPrivileged来实现的.就不会有后面的检查了
+- java 类加载
+    - java中class.forName()和classLoader都可用来对类进行加载
+    - class.forName()前者除了将类的.class文件加载到jvm中之外，还会对类进行解释，执行类中的static块。
+    - classLoader只干一件事情，就是将.class文件加载到jvm中，不会执行static中的内容,只有在newInstance才会去执行static块。
+    
+- 方法的参数为lambda时，会先进入方法内，再计算lambda参数
+
 - java读取xml `DocumentBuilderFactory.newInstance().newDocumentBuilder().parse('file.xml')`
     - Node接口是代表了文档树中的抽象节点，多使用Node子对象Element,Attr,Text
     - xml元素类型判断

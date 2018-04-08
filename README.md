@@ -46,7 +46,8 @@ start from [http://localhost:8999](http://localhost:8999)
 ## todo
 
 - [ ] 支持ref为 object   
-- [ ] 解决循环依赖问题   
+- [ ] 解决二重循环依赖问题   
+- [ ] 解决多重嵌套依赖问题   
 - [ ] getBean By class   
 - [ ] 属性默认为字符串，实现基本类型自动转换   
 - [ ] 扫描指定包的bean   

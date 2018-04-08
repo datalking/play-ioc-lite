@@ -94,7 +94,13 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 //        }
     }
 
-    protected void processBeanDefinition(Element ele, BeanDefinitionParserDelegate delegate) throws Exception {
+    /**
+     * 解析xml元素，并注册到beanDefinitionMap
+     *
+     * @param ele 元素节点
+     * @param delegate 解析器
+     */
+    private void processBeanDefinition(Element ele, BeanDefinitionParserDelegate delegate) throws Exception {
 
         // 解析属性并创建bean
         BeanDefinitionHolder bdHolder = delegate.parseBeanDefinitionElement(ele);
@@ -105,6 +111,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
             BeanDefinitionReaderUtils.registerBeanDefinition(bdHolder, beanDefinitionReader.getRegistry());
 
         }
+
     }
 
 

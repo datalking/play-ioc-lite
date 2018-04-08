@@ -1,19 +1,10 @@
 package com.github.datalking.beans.factory.support;
 
-
-import com.github.datalking.beans.PropertyValue;
 import com.github.datalking.beans.factory.ObjectFactory;
 import com.github.datalking.beans.factory.config.BeanDefinition;
-import com.github.datalking.beans.factory.BeanFactory;
-import com.github.datalking.beans.factory.config.BeanReference;
 import com.github.datalking.beans.factory.config.ConfigurableBeanFactory;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -23,29 +14,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
 
+    //存放已经创建或正在创建的bean名称，用于失败回滚或销毁清理
+    private final Set<String> alreadyCreated = Collections.newSetFromMap(new ConcurrentHashMap<>(256));
 
 //    private boolean cacheBeanMetadata = true;
-
-//    private final Set<String> alreadyCreated = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>(256));
 //    private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
-
-    // ====删掉====
-//    private Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String, BeanDefinition>();
-//    private final List<String> beanDefinitionNames = new ArrayList<String>();
-
-
-//    public void destroyBean(String beanName, Object beanInstance) {
-
-//    protected <T> T doGetBean(
-
-//    public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
-
-//    protected abstract BeanDefinition getBeanDefinition(String beanName) throws BeansException;
-
-//    public List<BeanPostProcessor> getBeanPostProcessors() {
-
-//    protected void initBeanWrapper(BeanWrapper bw) {
-
 
     protected abstract Object createBean(String beanName, GenericBeanDefinition bd, Object[] args) throws Exception;
 
@@ -63,40 +36,38 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         //将别名解析为bean唯一名称
         //final String name = transformedBeanName(name);
 
-        /// 如果name对应的bean实例已存在，则直接返回bean
+        /// 如果name对应的bean实例已缓存，则直接返回bean
+        // 从3级缓存中找bean
         Object sharedInstance = getSingleton(name);
         if (sharedInstance != null && args == null) {
             return (T) sharedInstance;
         }
-        ///如果name不存在，则新建bean
 
-        Object targetBean;
-        ///todo 先检查并创建name所依赖的bean
+        ///如果name对应的bean实例不存在，则新建bean
+
+        /// 标记为已经创建
+        if (!this.alreadyCreated.contains(name)) {
+            this.alreadyCreated.add(name);
+        }
 
         GenericBeanDefinition bd = (GenericBeanDefinition) getBeanDefinition(name);
         //合并beanDefinition
         // bd = getMergedLocalBeanDefinition(beanName);
 
-        ///再创建单例bean
-        Object bean = createBean(name, bd, args);
-        targetBean = getSingleton(name, (ObjectFactory) () -> bean);
+        ///判断scope为单例，创建单例bean
 
-        //写成下面这样会异常，createBean()未执行，会先执行getSingleton()
-        //targetBean = getSingleton(name, (ObjectFactory) () -> createBean(name, (GenericBeanDefinition) getBeanDefinition(name), args));
+        Object targetBean;
+        targetBean = getSingleton(name, (ObjectFactory) () -> createBean(name, bd, args));
 
         return (T) targetBean;
     }
 
 
-//
-//    public void registerBeanDefinition(String name, BeanDefinition beanDefinition) throws Exception {
-//        beanDefinitionMap.put(name, beanDefinition);
-//        beanDefinitionNames.add(name);
-//    }
-//
-
-
-//    protected abstract Object doCreateBean(BeanDefinition beanDefinition) throws Exception;
+//    public void destroyBean(String beanName, Object beanInstance) {
+//    public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
+//    protected abstract BeanDefinition getBeanDefinition(String beanName) throws BeansException;
+//    public List<BeanPostProcessor> getBeanPostProcessors() {
+//    protected void initBeanWrapper(BeanWrapper bw) {
 
 
 }

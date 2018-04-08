@@ -10,7 +10,7 @@ public interface SingletonBeanRegistry {
 
     void registerSingleton(String beanName, Object singletonObject);
 
-    Object getSingleton(String beanName);
+    Object getSingleton(String beanName) throws Exception;
 
     boolean containsSingleton(String beanName);
 

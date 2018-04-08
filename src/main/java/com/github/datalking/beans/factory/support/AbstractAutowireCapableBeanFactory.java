@@ -1,5 +1,8 @@
 package com.github.datalking.beans.factory.support;
 
+import com.github.datalking.beans.BeanWrapper;
+import com.github.datalking.beans.BeanWrapperImpl;
+import com.github.datalking.beans.MutablePropertyValues;
 import com.github.datalking.beans.PropertyValue;
 import com.github.datalking.beans.factory.ObjectFactory;
 import com.github.datalking.beans.factory.config.AutowireCapableBeanFactory;
@@ -7,6 +10,8 @@ import com.github.datalking.beans.factory.config.BeanDefinition;
 import com.github.datalking.beans.factory.config.BeanReference;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * BeanFactory抽象类
@@ -17,7 +22,7 @@ import java.lang.reflect.Field;
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory
         implements AutowireCapableBeanFactory {
 
-    //private boolean allowCircularReferences = true;
+    private boolean allowCircularReferences = true;
 
     public AbstractAutowireCapableBeanFactory() {
         super();
@@ -33,31 +38,52 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     @Override
     protected Object createBean(String beanName, GenericBeanDefinition bd, Object[] args) throws Exception {
 
+        Class beanClass = doResolveBeanClass(bd);
+        bd.setBeanClass(beanClass);
+
         return doCreateBean(beanName, bd, args);
     }
 
 
     protected Object doCreateBean(final String beanName, final GenericBeanDefinition bd, final Object[] args) throws Exception {
 
-        // 调用无参构造函数新建bean实例
-        Object bean = createBeanInstance(beanName, bd, args);
-//        beanDefinition.setBean(bean);
+        BeanWrapper instanceWrapper = null;
 
-        // 先注册bean对象引用
-        addSingletonFactory(beanName, () -> bean);
+        // 调用无参构造函数新建bean实例
+        instanceWrapper = createBeanInstance(beanName, bd, args);
+        final Object bean = (instanceWrapper != null ? instanceWrapper.getWrappedInstance() : null);
+
+        // 将beanName加入正在创建的集合
+        beforeSingletonCreation(beanName);
+
+        boolean earlySingletonExposure = (bd.isSingleton() && this.allowCircularReferences && isSingletonCurrentlyInCreation(beanName));
+        if (earlySingletonExposure) {
+            // 先添加到singletonFactories和registeredSingletons中，提前曝光引用
+            addSingletonFactory(beanName, () -> bean);
+        }
+
 
         //注入属性
-        populateBean(beanName, bd, bean);
+        populateBean(beanName, bd, instanceWrapper);
+
+//        Object exposedObject = bean;
+//        if(exposedObject!=null){
+//            //调用配置的init方法
+//            exposedObject = initializeBean(beanName, exposedObject, mbd);
+//
+//        }
+
+        //注册bean销毁的方法
+//      registerDisposableBeanIfNecessary(beanName, bean, mbd);
+
 
         return bean;
     }
 
-    //    protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd, Object[] args) {
-    protected Object createBeanInstance(String beanName, GenericBeanDefinition bd, Object[] args) throws Exception {
+    protected BeanWrapper createBeanInstance(String beanName, GenericBeanDefinition bd, Object[] args) throws Exception {
 
-        // 加载类
-        Class beanClass = doResolveBeanClass(bd);
-        bd.setBeanClass(beanClass);
+//        Class beanClass = doResolveBeanClass(bd);
+//        bd.setBeanClass(beanClass);
 
         //todo 选择构造器
 
@@ -70,15 +96,18 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
      * 通过jdk反射生成bean实例
      * spring对调用无参构造函数生成实例使用的是cglib
      */
-    protected Object instantiateBean(final String beanName, final GenericBeanDefinition bd) throws IllegalAccessException, InstantiationException {
+    private BeanWrapper instantiateBean(final String beanName, final GenericBeanDefinition bd) throws IllegalAccessException, InstantiationException {
 
-        return bd.getBeanClass().newInstance();
+        Object beanInstance = bd.getBeanClass().newInstance();
+        BeanWrapper bw = new BeanWrapperImpl(beanInstance);
+
+        return bw;
 
     }
 
-    protected void populateBean(String beanName, GenericBeanDefinition bd, Object bean) throws Exception {
+    private void populateBean(String beanName, GenericBeanDefinition bd, BeanWrapper bw) throws Exception {
 
-        applyPropertyValues(bean, bd);
+        applyPropertyValues(beanName, bd, bw);
 
     }
 
@@ -95,36 +124,34 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
      * 将BeanDefinition的属性注入到bean实例
      * todo 注解处理
      *
-     * @param bean 待添加属性的对象
-     * @param bd   要添加的属性定义
+     * @param beanName 待添加属性的beanName
+     * @param bd       要添加的属性定义
+     * @param bw       beanWrapper实例
      */
-    protected void applyPropertyValues(Object bean, BeanDefinition bd) throws Exception {
+    protected void applyPropertyValues(String beanName, BeanDefinition bd, BeanWrapper bw) throws Exception {
 
-        for (PropertyValue propertyValue : bd.getPropertyValues().getPropertyValues()) {
+        List<PropertyValue> pvList = bd.getPropertyValues().getPropertyValueList();
+        List<PropertyValue> deepCopy = new ArrayList<>(pvList.size());
 
-            Field declaredField = bean.getClass().getDeclaredField(propertyValue.getName());
+        BeanDefinitionValueResolver valueResolver = new BeanDefinitionValueResolver(this);
 
-            declaredField.setAccessible(true);
-            Object value = propertyValue.getValue();
 
-            //特殊处理引用类型字段
-            if (value instanceof BeanReference) {
-                BeanReference beanReference = (BeanReference) value;
-                //初始化依赖的对象
-                value = getBean(beanReference.getName());
-            }
+        for (PropertyValue pv : pvList) {
 
-            // 特殊处理整型字段
-            Class clazz = declaredField.getType();
-            if (clazz.getName().equals("java.lang.Integer")) {
-                declaredField.set(bean, Integer.valueOf(value.toString()));
-                continue;
-            }
+            String pvName = pv.getName();
+            Object pvValue = pv.getValue();
 
-            //将bean对象的declaredField字段设置为value
-            declaredField.set(bean, value);
+            // ==== 属性值类型转换，使用默认转换器，string获取值，ref转bean实例
+            Object resolvedValue = valueResolver.resolveValueIfNecessary(pv, pvValue);
+
+            deepCopy.add(new PropertyValue(pvName, resolvedValue));
 
         }
+
+        // ==== 批量设置值
+        bw.setPropertyValues(new MutablePropertyValues(deepCopy));
+
+
     }
 
 

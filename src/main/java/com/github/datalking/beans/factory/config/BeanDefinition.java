@@ -19,9 +19,14 @@ public interface BeanDefinition {
     boolean isLazyInit();
 
     void setLazyInit(boolean lazyInit);
-//
+
+    void setDependsOn(String... dependsOn);
+
+    String[] getDependsOn();
+
+    boolean isSingleton();
+
 //    boolean isPrimary();
-//    boolean isSingleton();
 //    boolean isPrototype();
 //    boolean isAutowireCandidate();
 //    // bean是否是抽象类，若是，则不会创建实例

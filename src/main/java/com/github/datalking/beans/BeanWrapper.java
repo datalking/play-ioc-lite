@@ -1,5 +1,6 @@
 package com.github.datalking.beans;
 
+import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 
 /**
@@ -14,7 +15,10 @@ public interface BeanWrapper {
 
     Object getWrappedInstance();
 
+    void setPropertyValues(PropertyValues pvs) throws NoSuchFieldException, IllegalAccessException;
+
+
 //    PropertyDescriptor[] getPropertyDescriptors();
-//    PropertyDescriptor getPropertyDescriptor(String propertyName)
+//    PropertyDescriptor getPropertyDescriptor(String propertyName) throws IntrospectionException;
 
 }

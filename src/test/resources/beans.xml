@@ -9,11 +9,11 @@
 <!--http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">-->
 
 <beans>
-    <bean name="outputService" class="com.github.datalking.bean.OutputService">
+    <bean name="outputService" class="com.github.datalking.bean.WorldService">
         <property name="helloWorldService" ref="helloWorldService"></property>
     </bean>
 
-    <bean name="helloWorldService" class="com.github.datalking.bean.HelloWorldService">
+    <bean name="helloWorldService" class="com.github.datalking.bean.HelloService">
         <!--<property name="text" value="Hello World!"></property>-->
         <property name="text" value="Hello B**ches!"></property>
         <property name="outputService" ref="outputService"></property>
