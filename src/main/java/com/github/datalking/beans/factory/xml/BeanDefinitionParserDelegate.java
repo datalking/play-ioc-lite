@@ -56,7 +56,7 @@ public class BeanDefinitionParserDelegate {
 
     protected AbstractBeanDefinition createBeanDefinition(String className) throws ClassNotFoundException {
 
-        return BeanDefinitionReaderUtils.createBeanDefinition(className, this.getClass().getClassLoader());
+        return BeanDefinitionReaderUtils.createBeanDefinition(className, null);
 
     }
 
@@ -70,21 +70,23 @@ public class BeanDefinitionParserDelegate {
 
         /// 最终使用的beanName为id，若id不存在，则使用nameAttr，若name也不存在，则抛出异常
         if (id != null && id.trim().length() > 0) {
+
             beanName = id;
+
+        } else if (nameAttr != null && nameAttr.trim().length() > 0) {
+
+            beanName = nameAttr;
+
         } else {
-            if (nameAttr != null && nameAttr.trim().length() > 0) {
-                beanName = nameAttr;
-            } else {
-                beanName = ((AbstractBeanDefinitionReader) this.beanDefinitionReader).generateBeanName((BeanDefinition) this.beanDefinitionReader);
-            }
+            beanName = ((AbstractBeanDefinitionReader) this.beanDefinitionReader).generateBeanName((BeanDefinition) this.beanDefinitionReader);
         }
 
-        AbstractBeanDefinition beanDefinition = parseBeanDefinitionElement(ele, beanName, null);
+        AbstractBeanDefinition beanDefinition = parseBeanDefinitionElement(ele, beanName,null);
 
         //List<String> aliases = new ArrayList<String>();
 
 
-        return null;
+        return new BeanDefinitionHolder(beanDefinition, beanName);
     }
 
 

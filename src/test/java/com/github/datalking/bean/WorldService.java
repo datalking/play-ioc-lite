@@ -10,4 +10,19 @@ public class WorldService {
         System.out.println(text);
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public HelloService getHelloService() {
+        return helloService;
+    }
+
+    public void setHelloService(HelloService helloService) {
+        this.helloService = helloService;
+    }
 }

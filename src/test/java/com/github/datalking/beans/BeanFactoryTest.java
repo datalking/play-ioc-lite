@@ -2,6 +2,8 @@ package com.github.datalking.beans;
 
 import com.github.datalking.bean.BeanAllStr;
 import com.github.datalking.bean.DataAnalyst;
+import com.github.datalking.bean.HelloService;
+import com.github.datalking.bean.WorldService;
 import com.github.datalking.beans.factory.support.AbstractBeanFactory;
 import com.github.datalking.beans.factory.support.BeanDefinitionRegistry;
 import com.github.datalking.beans.factory.support.DefaultListableBeanFactory;
@@ -21,17 +23,24 @@ public class BeanFactoryTest {
 
         // 读取配置
         XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader((BeanDefinitionRegistry) beanFactory);
-        xmlBeanDefinitionReader.loadBeanDefinitions("beans-primitive.xml");
+//        xmlBeanDefinitionReader.loadBeanDefinitions("beans-primitive.xml");
+        xmlBeanDefinitionReader.loadBeanDefinitions("beans-circular.xml");
 
 
         ///立即初始化
-        ((DefaultListableBeanFactory) beanFactory).preInstantiateSingletons();
+//        ((DefaultListableBeanFactory) beanFactory).preInstantiateSingletons();
 
-        BeanAllStr beanAllStr = (BeanAllStr) beanFactory.getBean("beanAllStr");
-        System.out.println(beanAllStr);
+//        BeanAllStr beanAllStr = (BeanAllStr) beanFactory.getBean("beanAllStr");
+//        System.out.println(beanAllStr);
+//
+//        DataAnalyst dataAnalyst = (DataAnalyst) beanFactory.getBean("dataAnalyst");
+//        System.out.println(dataAnalyst);
 
-        DataAnalyst dataAnalyst = (DataAnalyst) beanFactory.getBean("dataAnalyst");
-        System.out.println(dataAnalyst);
+        HelloService hService = (HelloService) beanFactory.getBean("helloService");
+        WorldService wService = (WorldService) beanFactory.getBean("worldService");
+        hService.print();
+        wService.print();
+
 
     }
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean name="helloService" class="com.github.datalking.bean.HelloService">
+        <property name="text" value="hello"></property>
+        <property name="worldService" ref="worldService"></property>
+    </bean>
+
+    <bean name="worldService" class="com.github.datalking.bean.WorldService">
+        <property name="text" value="world"></property>
+        <property name="helloService" ref="helloService"></property>
+    </bean>
+</beans>
+

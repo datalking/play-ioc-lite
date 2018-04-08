@@ -23,16 +23,15 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
     //    protected BeanDefinitionParserDelegate createDelegate(XmlReaderContext readerContext, Element root, BeanDefinitionParserDelegate parentDelegate) {
     protected BeanDefinitionParserDelegate createDelegate(BeanDefinitionReader bdReader, Element root) {
         BeanDefinitionParserDelegate delegate = new BeanDefinitionParserDelegate(bdReader);
-//        delegate.initDefaults(root, parentDelegate);
         return delegate;
     }
 
     @Override
     public void registerBeanDefinitions(Document doc, BeanDefinitionReader bdReader) throws Exception {
 
+        this.beanDefinitionReader = bdReader;
         Element root = doc.getDocumentElement();
         doRegisterBeanDefinitions(root);
-        this.beanDefinitionReader = bdReader;
 
     }
 
@@ -97,7 +96,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
     /**
      * 解析xml元素，并注册到beanDefinitionMap
      *
-     * @param ele 元素节点
+     * @param ele      元素节点
      * @param delegate 解析器
      */
     private void processBeanDefinition(Element ele, BeanDefinitionParserDelegate delegate) throws Exception {
