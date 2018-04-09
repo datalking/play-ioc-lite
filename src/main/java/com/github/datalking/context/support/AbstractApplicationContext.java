@@ -2,15 +2,9 @@ package com.github.datalking.context.support;
 
 
 import com.github.datalking.beans.factory.config.ConfigurableListableBeanFactory;
-import com.github.datalking.beans.factory.support.DefaultListableBeanFactory;
-import com.github.datalking.beans.factory.xml.XmlBeanDefinitionReader;
-import com.github.datalking.context.ApplicationContext;
 import com.github.datalking.beans.factory.support.AbstractBeanFactory;
+import com.github.datalking.beans.factory.support.DefaultListableBeanFactory;
 import com.github.datalking.context.ConfigurableApplicationContext;
-import com.github.datalking.io.ResourceLoader;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * ApplicationContext 抽象类
@@ -22,6 +16,11 @@ public abstract class AbstractApplicationContext implements ConfigurableApplicat
 //    private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<BeanFactoryPostProcessor>();
 //    private long startupDate;
 
+
+    public AbstractApplicationContext() {
+        this.beanFactory = new DefaultListableBeanFactory();
+
+    }
 
     public AbstractApplicationContext(AbstractBeanFactory beanFactory) {
         this.beanFactory = beanFactory;
@@ -40,5 +39,9 @@ public abstract class AbstractApplicationContext implements ConfigurableApplicat
     public AbstractBeanFactory getBeanFactory() {
         return beanFactory;
     }
+
+    public void refresh() throws Exception {
+    }
+
 
 }
