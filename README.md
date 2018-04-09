@@ -3,7 +3,7 @@
 
 ## target
 - 专注于实现纯粹的依赖注入
-- 使用方式与Spring相同，精简了spring的源码
+- 使用方式与spring相同，精简了spring的源码
 - lite版不支持aop，推荐使用支持aop的[play-ioc](https://github.com/datalking/play-ioc)
 
 ## overview
@@ -31,8 +31,8 @@
 
 ## dev 
 ```sh
- git clone https://github.com/datalking/play-ioc.git
- cd play-ioc/
+ git clone https://github.com/datalking/play-ioc-lite.git
+ cd play-ioc-lite/
  ./start-build-dev.sh
 ```
 
@@ -52,7 +52,7 @@ AbstractBeanFactory beanFactory = new DefaultListableBeanFactory();
 // 读取配置
 XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader((BeanDefinitionRegistry) beanFactory);
 xmlBeanDefinitionReader.loadBeanDefinitions("beans-primitive.xml");
-BeanAllStr beanAllStr = (BeanAllStr) applicationContext.getBean("beanAllStr");
+BeanAllStr beanAllStr = (BeanAllStr) beanFactory.getBean("beanAllStr");
 System.out.println(beanAllStr);
 ```
 ## todo
@@ -104,16 +104,20 @@ System.out.println(beanAllStr);
 ```   
 - [ ] 迁移到以注解为主的使用方式
 
-## Usage
+## user guide
 
 - play-ioc支持的xml配置说明
     - 顶层标签为 `<beans>`
     - `<bean>` 元素可配置 id,name,class属性，class必须，id和name都可选
     - `<property>` 元素可配置 name,value,ref属性，name必须，value和ref二选一
-- GenericBeanDefinition保存beanClass实际对象和属性
+- GenericBeanDefinition保存bean属性元数据，包括beanClass和propertyValues
+    - beanClass在xml读取阶段是字符串，在实例创建阶段是class对象
+    - propertyValues存储属性键值对，在xml读取阶段是都是字符串，特殊的是ref属性会处理成RuntimeBeanReference
 - BeanDefinitionReader读取bean配置  
-    - 存储到DefaultListableBeanFactory的beanDefinitionMap
+    - 最终存储到DefaultListableBeanFactory的beanDefinitionMap
     - 此时bean所对应的class未加载，也未实例化
+- AbstractAutowireCapableBeanFactory的doCreate()方法会创建bean实例
+    - bean实例最终保存在DefaultSingletonBeanRegistry的singletonObjects中
 
 ## License
 
