@@ -57,8 +57,8 @@ System.out.println(beanAllStr);
 ```
 ## todo
 
+- [ ] 手动注册bean生成BeanDefinition: @Configuration  @Bean 
 - [ ] getBean By class   
-- [ ] 扫描指定包的bean   
 - [ ] xml 支持constructor-args元素   
 - [ ] 支持BeanPostProcessor   
 - [ ] 支持别名   
@@ -68,6 +68,7 @@ System.out.println(beanAllStr);
 - [ ] xml中同名bean抛出异常   
 - [ ] 扫描指定包时利用asm实现所有子包.class文件的不加载，最初是预加载指定包获取bean信息   
 
+- [x] 扫描指定包带有@Component注解的bean   
 - [x] xml bean元素支持id   
 - [x] 属性默认为字符串，实现基本类型自动转换   
 - [x] 支持ref为 object   
