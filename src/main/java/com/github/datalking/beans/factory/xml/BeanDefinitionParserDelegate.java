@@ -171,7 +171,7 @@ public class BeanDefinitionParserDelegate {
 
     /**
      * 解析属性名对应的值
-     * value和value只能有1个
+     * value和ref只能有1个
      */
     public Object parsePropertyValue(Element ele, BeanDefinition bd, String propertyName) throws Exception {
 
@@ -181,7 +181,7 @@ public class BeanDefinitionParserDelegate {
         if ((hasRefAttribute && hasValueAttribute)) {
             throw new Exception(ele.getTagName() + " is only allowed to contain either 'ref' attribute OR 'value' attribute ");
         }
-
+// todo ref和value不能都没有
         /// 如果是ref属性，返回RuntimeBeanReference对象
         if (hasRefAttribute) {
             String refName = ele.getAttribute(REF_ATTRIBUTE);

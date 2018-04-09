@@ -16,7 +16,7 @@
     - 不支持为bean指定别名
     - 不支持xml中指定扫描指定包，仅支持注解扫描指定包
     - 不支持构造注入与方法注入，仅支持属性注入
-    - 不支持创建和使用除 `spring常用配置标签` 外的自定义xml标签
+    - 不支持创建和使用除 `play-ioc支持的xml配置说明` 外的自定义xml标签
     - 不支持将嵌套子元素作为属性，仅支持统一使用扁平方式指定属性  
         - 不支持innerBean的写法，建议扁平化定义bean，使用ref属性引用其他bean
         - `<property name="id" value="helloId"/>`
@@ -45,25 +45,28 @@ start from [http://localhost:8999](http://localhost:8999)
 
 ## todo
 
-- [ ] 支持ref为 object   
-- [ ] 解决二重循环依赖问题   
-- [ ] 解决多重嵌套依赖问题   
+
 - [ ] getBean By class   
 - [ ] 属性默认为字符串，实现基本类型自动转换   
 - [ ] 扫描指定包的bean   
 - [ ] xml bean元素支持id   
 - [ ] xml 支持constructor-args元素   
+- [ ] 支持BeanPostProcessor   
 - [ ] 支持别名   
 - [ ] 处理嵌套bean的问题   
 - [ ] xml中同名bean抛出异常   
 - [ ] 注解支持 `@Named`, `@Injected`   
+- [ ] 解决多重嵌套依赖问题   
 
+- [x] 支持ref为 object   
+- [x] 解决二重循环依赖问题   
 - [x] ApplicationContext默认立即初始化   
 - [x] 抽象出 BeanDefinition 作为接口   
 - [x] 抽象出 PropertyValues 作为接口   
 - [x] 基本IoC
 
 ## later
+- [ ] bean销毁的声明周期   
 - [ ] BeanAware接口   
 - [ ] BeanWrapper用于属性类型转换，暂未使用   
 - [ ] 支持将bean的value类型配置为set,list   
@@ -92,10 +95,13 @@ start from [http://localhost:8999](http://localhost:8999)
 
 ## Architecture
 
-- BeanDefinition保存beanClass实际对象和属性
+- GenericBeanDefinition保存beanClass实际对象和属性
 - BeanDefinitionReader读取bean配置  
     - 存储到DefaultListableBeanFactory的beanDefinitionMap
-    - 此时bean未实例化
+    - 此时bean所对应的class未加载，也未实例化
+- play-ioc支持的xml配置说明
+    - 顶层标签为 `<beans>`
+    - `<bean>` 元素可配置 id,name,class属性，class必须，id和name都可选
 
 ## License
 

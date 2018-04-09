@@ -4,12 +4,9 @@ import com.github.datalking.beans.BeanWrapper;
 import com.github.datalking.beans.BeanWrapperImpl;
 import com.github.datalking.beans.MutablePropertyValues;
 import com.github.datalking.beans.PropertyValue;
-import com.github.datalking.beans.factory.ObjectFactory;
 import com.github.datalking.beans.factory.config.AutowireCapableBeanFactory;
 import com.github.datalking.beans.factory.config.BeanDefinition;
-import com.github.datalking.beans.factory.config.BeanReference;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,12 +46,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
         BeanWrapper instanceWrapper = null;
 
-        // 调用无参构造函数新建bean实例
+        // 调用无参构造函数新建bean实例，尚未注入属性
         instanceWrapper = createBeanInstance(beanName, bd, args);
         final Object bean = (instanceWrapper != null ? instanceWrapper.getWrappedInstance() : null);
 
-        // 将beanName加入正在创建的集合
-        beforeSingletonCreation(beanName);
 
         boolean earlySingletonExposure = (bd.isSingleton() && this.allowCircularReferences && isSingletonCurrentlyInCreation(beanName));
         if (earlySingletonExposure) {
@@ -141,7 +136,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             String pvName = pv.getName();
             Object pvValue = pv.getValue();
 
-            // ==== 属性值类型转换，使用默认转换器，string获取值，ref转bean实例
+            // ==== 属性值类型转换，使用默认转换器，ref转bean实例，string直接返回值
             Object resolvedValue = valueResolver.resolveValueIfNecessary(pv, pvValue);
 
             deepCopy.add(new PropertyValue(pvName, resolvedValue));
@@ -154,13 +149,6 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
     }
 
-
-//public Object createBean(Class<?> beanClass) throws BeansException {
-//protected Object createBean(String beanName, RootBeanDefinition mbd, Object[] args) throws BeanCreationException {
-//protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final Object[] args)
-//protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd, Object[] args) {
-
-//protected void populateBean(String beanName, RootBeanDefinition mbd, BeanWrapper bw) {
 
 //public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName)
 //public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName)

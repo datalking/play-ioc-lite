@@ -3,6 +3,7 @@ package com.github.datalking.beans.factory.support;
 import com.github.datalking.beans.factory.ObjectFactory;
 import com.github.datalking.beans.factory.config.BeanDefinition;
 import com.github.datalking.beans.factory.config.ConfigurableBeanFactory;
+import com.github.datalking.exception.NoSuchBeanDefinitionException;
 
 import java.util.Collections;
 import java.util.Set;
@@ -36,8 +37,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         //将别名解析为bean唯一名称
         //final String name = transformedBeanName(name);
 
-        /// 如果name对应的bean实例已缓存，则直接返回bean
-        // 从3级缓存中找bean
+        /// 从3级缓存中找bean，如果name对应的bean实例已缓存，则直接返回bean
         Object sharedInstance = getSingleton(name);
         if (sharedInstance != null && args == null) {
             return (T) sharedInstance;
@@ -51,11 +51,13 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         }
 
         GenericBeanDefinition bd = (GenericBeanDefinition) getBeanDefinition(name);
+        if (bd == null) {
+            throw new NoSuchBeanDefinitionException(name + "对应的GenericBeanDefinition不存在");
+        }
         //合并beanDefinition
         // bd = getMergedLocalBeanDefinition(beanName);
 
         ///判断scope为单例，创建单例bean
-
         Object targetBean;
         targetBean = getSingleton(name, (ObjectFactory) () -> createBean(name, bd, args));
 
@@ -65,7 +67,6 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
 //    public void destroyBean(String beanName, Object beanInstance) {
 //    public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
-//    protected abstract BeanDefinition getBeanDefinition(String beanName) throws BeansException;
 //    public List<BeanPostProcessor> getBeanPostProcessors() {
 //    protected void initBeanWrapper(BeanWrapper bw) {
 
