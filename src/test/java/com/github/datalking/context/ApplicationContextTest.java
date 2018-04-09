@@ -12,7 +12,6 @@ public class ApplicationContextTest {
 
 //        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("beans.xml");
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("beans-primitive.xml");
-
         BeanAllStr beanAllStr = (BeanAllStr) applicationContext.getBean("beanAllStr");
         System.out.println(beanAllStr);
 
