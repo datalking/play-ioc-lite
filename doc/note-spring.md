@@ -3,10 +3,13 @@ Spring笔记
 
 ## summary
 
-- dependenciesForBeanMap记录bean之间的依赖关系有两方面的作用：
+- 扫描basePackage  
+    - ComponentScanBeanDefinitionParser解析xml中配置的 `<context:component-scan base-package="a.b" />`
+    - ClassPathBeanDefinitionScanner解析直接传入的包名
+- dependenciesForBeanMap记录bean之间的依赖关系有两方面的作用：  
     - 在单例情况下，可以指定相互依赖bean之间的销毁顺序
     - 避免循环依赖
-- spring doGetBean()方法执行顺序
+- spring doGetBean()方法执行顺序  
     - getSingleton()
     - new ObjectFactory(){}
     - createBean()

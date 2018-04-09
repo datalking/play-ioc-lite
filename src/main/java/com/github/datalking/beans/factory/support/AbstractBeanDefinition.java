@@ -6,12 +6,14 @@ import com.github.datalking.io.Resource;
 
 /**
  * BeanDefinition抽象类
+ * beanName不在这里，在BeanDefinitionHolder
  * todo 实现clone
  *
  * @author yaoo on 4/3/18
  */
 public abstract class AbstractBeanDefinition implements BeanDefinition, Cloneable {
 
+    // reader阶段是字符串，createBean阶段是class对象
     private volatile Object beanClass;
 
     private MutablePropertyValues propertyValues;

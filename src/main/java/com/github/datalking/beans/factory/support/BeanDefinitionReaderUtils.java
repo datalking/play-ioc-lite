@@ -1,8 +1,12 @@
 package com.github.datalking.beans.factory.support;
 
+import com.github.datalking.annotation.meta.AnnotationMetadata;
+import com.github.datalking.beans.factory.config.AnnotatedBeanDefinition;
 import com.github.datalking.beans.factory.config.BeanDefinition;
 import com.github.datalking.beans.factory.config.BeanDefinitionHolder;
 import com.github.datalking.util.Assert;
+
+import java.util.Set;
 
 /**
  * BeanDefinitionReader相关工具类
@@ -82,5 +86,18 @@ public class BeanDefinitionReaderUtils {
 
     }
 
+    public static String generateAnnotatedBeanName(AnnotatedBeanDefinition abd, BeanDefinitionRegistry registry) {
+        String beanName = abd.getBeanClassName();
 
+        int dotIdx = beanName.lastIndexOf(".");
+        if (dotIdx != -1) {
+            beanName = beanName.substring(dotIdx + 1);
+        }
+
+        // 首字母小写
+        beanName = Character.toString(beanName.charAt(0)) + beanName.substring(1);
+        return beanName;
+
+
+    }
 }

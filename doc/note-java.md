@@ -3,7 +3,9 @@ java笔记
 
 ## summary
 
-
+- java 字符串 替换
+    - replace函数只实现简单的替换功能，默认替换所有
+    - replaceAll函数实现了正则表达式替换功能。
 - java 安全管理器
     - AccessController.doPrivileged意思是这个是特别的,不用做权限检查，使用场景：
         - 假如1.jar中有类可以读取一个文件，但是我们的类本生是没有权限去读取那个文件的，在1.jar中如果读取文件的方法是通过doPrivileged来实现的.就不会有后面的检查了

@@ -7,6 +7,6 @@ package com.github.datalking.context;
  */
 public interface ConfigurableApplicationContext extends ApplicationContext {
 
-    public void refresh() throws Exception;
+    void refresh() throws Exception;
 
 }
