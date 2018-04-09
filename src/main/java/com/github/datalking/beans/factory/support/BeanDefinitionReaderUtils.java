@@ -95,7 +95,7 @@ public class BeanDefinitionReaderUtils {
         }
 
         // 首字母小写
-        beanName = Character.toString(beanName.charAt(0)) + beanName.substring(1);
+        beanName = Character.toLowerCase(beanName.charAt(0)) + beanName.substring(1);
         return beanName;
 
 

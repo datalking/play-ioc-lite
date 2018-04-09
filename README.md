@@ -66,6 +66,7 @@ System.out.println(beanAllStr);
 - [ ] 处理嵌套bean的问题   
 - [ ] 解决多重嵌套依赖问题   
 - [ ] xml中同名bean抛出异常   
+- [ ] 扫描指定包时利用asm实现所有子包.class文件的不加载，最初是预加载指定包获取bean信息   
 
 - [x] xml bean元素支持id   
 - [x] 属性默认为字符串，实现基本类型自动转换   

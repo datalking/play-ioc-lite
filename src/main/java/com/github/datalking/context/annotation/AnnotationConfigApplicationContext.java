@@ -2,6 +2,7 @@ package com.github.datalking.context.annotation;
 
 import com.github.datalking.beans.factory.support.AbstractBeanFactory;
 import com.github.datalking.beans.factory.support.BeanDefinitionRegistry;
+import com.github.datalking.beans.factory.support.DefaultListableBeanFactory;
 import com.github.datalking.context.support.AbstractApplicationContext;
 import com.github.datalking.util.Assert;
 
@@ -18,20 +19,26 @@ public class AnnotationConfigApplicationContext extends AbstractApplicationConte
 
     public AnnotationConfigApplicationContext() {
         super();
-        this.reader = new AnnotatedBeanDefinitionReader((BeanDefinitionRegistry) this);
-        this.scanner = new ClassPathBeanDefinitionScanner((BeanDefinitionRegistry) this);
+        this.reader = new AnnotatedBeanDefinitionReader(beanFactory);
+        this.scanner = new ClassPathBeanDefinitionScanner(beanFactory);
     }
 
-    public AnnotationConfigApplicationContext(AbstractBeanFactory beanFactory) {
+    public AnnotationConfigApplicationContext(DefaultListableBeanFactory beanFactory) {
         super(beanFactory);
-        this.reader = new AnnotatedBeanDefinitionReader((BeanDefinitionRegistry) this);
-        this.scanner = new ClassPathBeanDefinitionScanner((BeanDefinitionRegistry) this);
+        this.reader = new AnnotatedBeanDefinitionReader(beanFactory);
+        this.scanner = new ClassPathBeanDefinitionScanner(beanFactory);
     }
 
 
     public AnnotationConfigApplicationContext(Class<?>... annotatedClasses) {
         this();
         register(annotatedClasses);
+        //refresh();
+    }
+
+    public AnnotationConfigApplicationContext(String... basePackages) {
+        this();
+        scan(basePackages);
         //refresh();
     }
 

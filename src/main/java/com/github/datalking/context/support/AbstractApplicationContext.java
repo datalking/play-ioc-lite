@@ -11,7 +11,7 @@ import com.github.datalking.context.ConfigurableApplicationContext;
  */
 public abstract class AbstractApplicationContext implements ConfigurableApplicationContext {
 
-    protected AbstractBeanFactory beanFactory;
+    protected DefaultListableBeanFactory beanFactory;
 
 //    private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<BeanFactoryPostProcessor>();
 //    private long startupDate;
@@ -22,7 +22,7 @@ public abstract class AbstractApplicationContext implements ConfigurableApplicat
 
     }
 
-    public AbstractApplicationContext(AbstractBeanFactory beanFactory) {
+    public AbstractApplicationContext(DefaultListableBeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }
 

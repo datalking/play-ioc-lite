@@ -1,18 +1,14 @@
-package com.github.datalking.bean;
-
-import com.github.datalking.annotation.Component;
+package com.github.datalking.bean.strbean;
 
 /**
  * bean 所有字段为string
  *
  * @author yaoo on 4/5/18
  */
-@Component
-public class BeanAllStr {
+public class BeanStr01 {
 
     String id;
     String name;
-    String desc;
 
     public String getId() {
         return id;
@@ -30,20 +26,12 @@ public class BeanAllStr {
         this.name = name;
     }
 
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
 
     @Override
     public String toString() {
         return "BeanAllStr{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", desc='" + desc + '\'' +
                 '}';
     }
 
