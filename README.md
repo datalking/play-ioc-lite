@@ -118,16 +118,16 @@ System.out.println(beanAllStr);
     - 顶层标签为 `<beans>`
     - `<bean>` 元素可配置 id,name,class属性，class必须，id和name都可选
     - `<property>` 元素可配置 name,value,ref属性，name必须，value和ref二选一
-- GenericBeanDefinition保存bean属性元数据，包括beanClass和propertyValues
+- BeanDefinition保存bean属性元数据，包括beanClass和propertyValues
     - beanClass在xml读取阶段是字符串，在实例创建阶段是class对象
     - propertyValues存储属性键值对，在xml读取阶段是都是字符串，特殊的是ref属性会处理成RuntimeBeanReference
 - BeanDefinitionReader读取bean配置  
-    - 最终存储到DefaultListableBeanFactory的beanDefinitionMap
-    - 此时bean所对应的class未加载，也未实例化
-- AbstractAutowireCapableBeanFactory的doCreate()方法会创建bean实例
-    - bean实例最终保存在DefaultSingletonBeanRegistry的singletonObjects中
-- 注解使用
-    - 使用注解时，要用 `@Configuration`，表示一个配置类，同一个类上还可以配置 `@ComponentScan` 
+    - 最终存储到DefaultListableBeanFactory的 `beanDefinitionMap`
+    - 此时bean所对应的class可能未加载，一定未实例化，实例化一定发生在调用getBean()方法时
+- AbstractAutowireCapableBeanFactory的doCreateBean()方法会创建bean实例
+    - bean实例最终保存到DefaultSingletonBeanRegistry的 `singletonObjects` 
+- 注解相关
+    - 使用注解时，要用 `@Configuration`，表示一个配置类，相当于配置文件的 `<beans>`，同一个类上还可以配置 `@ComponentScan` 
     - @ComponentScan不设置值时，默认扫描该类所在的包及所有子包
 
 ## License
