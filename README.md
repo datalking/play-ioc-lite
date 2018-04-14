@@ -8,8 +8,8 @@
 
 ## overview
 - 支持从xml中读取bean配置
-- 支持从注解中读取bean配置
-- ApplicationContext加载bean默认采用立即初始化，暂不支持懒加载开启，DefaultListableBeanFactory默认采用懒加载
+- 支持从注解中读取bean配置，目前支持的注解：`@Configuration`、`@Bean`、`@ComponentScan`、`@Component`
+- ApplicationContext加载bean默认采用立即初始化，DefaultListableBeanFactory默认采用懒加载
 - 仅支持单例bean，不支持多实例
 - 目前暂不支持：
     - 不支持将bean的value类型配置为set,list,map，仅支持字符串和ref  
@@ -23,7 +23,6 @@
         - ~~`<property name="fieldName"> <value="valueHere"></value> </property>`~~   
         - ~~`<property name="person"> <bean class="a.b.Person.class"></bean> </property>`~~   
     - 不支持xml格式校验和属性名校验，请手动检查
-    - 不支持FactoryBean
     - 不支持属性编辑器，默认自动转换基本类型对象，需要在源码上定制处理Date、File等字段
     - ...
 
@@ -37,7 +36,14 @@
 ```
 
 ## demo
-#### 使用 [ApplicationContext](https://github.com/datalking/play-ioc-lite/blob/master/src/test/java/com/github/datalking/context/ApplicationContextTest.java)
+#### 使用 [AnnotationConfigApplicationContext](https://github.com/datalking/play-ioc-lite/blob/master/src/test/java/com/github/datalking/context/annotation/AnnotationConfigApplicationContextTest.java)
+```
+// 指定要扫描的包名
+ApplicationContext ctx = new AnnotationConfigApplicationContext("com.github.datalking.bean");
+BeanAllStr beanAllStr = (BeanAllStr) applicationContext.getBean("beanAllStr");
+System.out.println(beanAllStr);
+```
+#### 使用 [ClassPathXmlApplicationContext](https://github.com/datalking/play-ioc-lite/blob/master/src/test/java/com/github/datalking/context/ApplicationContextTest.java)
 ```
 ApplicationContext applicationContext = new ClassPathXmlApplicationContext("beans-primitive.xml");
 BeanAllStr beanAllStr = (BeanAllStr) applicationContext.getBean("beanAllStr");
@@ -46,7 +52,7 @@ System.out.println(beanAllStr);
 
 #### 使用 [DefaultListableBeanFactory](https://github.com/datalking/play-ioc-lite/blob/master/src/test/java/com/github/datalking/beans/BeanFactoryTest.java)
 ```
-// 初始化BeanFactory并注册bean
+// 初始化BeanFactory
 AbstractBeanFactory beanFactory = new DefaultListableBeanFactory();
 // 读取配置
 XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader((BeanDefinitionRegistry) beanFactory);
@@ -54,9 +60,9 @@ xmlBeanDefinitionReader.loadBeanDefinitions("beans-primitive.xml");
 BeanAllStr beanAllStr = (BeanAllStr) beanFactory.getBean("beanAllStr");
 System.out.println(beanAllStr);
 ```
+
 ## todo
 
-- [ ] 手动注册bean生成BeanDefinition: @Configuration  @Bean 
 - [ ] getBean By class   
 - [ ] xml 支持constructor-args元素   
 - [ ] 支持BeanPostProcessor   
@@ -67,6 +73,8 @@ System.out.println(beanAllStr);
 - [ ] xml中同名bean抛出异常   
 - [ ] 扫描指定包时利用asm实现所有子包.class文件的不加载，最初是预加载指定包获取bean信息   
 
+- [x] 支持@ComponentScan 
+- [x] 手动注册bean生成BeanDefinition: @Configuration  @Bean 
 - [x] 扫描指定包带有@Component注解的bean   
 - [x] xml bean元素支持id   
 - [x] 属性默认为字符串，实现基本类型自动转换   
@@ -118,6 +126,9 @@ System.out.println(beanAllStr);
     - 此时bean所对应的class未加载，也未实例化
 - AbstractAutowireCapableBeanFactory的doCreate()方法会创建bean实例
     - bean实例最终保存在DefaultSingletonBeanRegistry的singletonObjects中
+- 注解使用
+    - 使用注解时，要用 `@Configuration`，表示一个配置类，同一个类上还可以配置 `@ComponentScan` 
+    - @ComponentScan不设置值时，默认扫描该类所在的包及所有子包
 
 ## License
 [MIT](http://opensource.org/licenses/MIT)
