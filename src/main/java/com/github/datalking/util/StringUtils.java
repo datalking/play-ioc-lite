@@ -16,4 +16,10 @@ public interface StringUtils {
     }
 
 
+    static String firstLetterUpperCase(String original) {
+        String result = "";
+        result = Character.toUpperCase(original.charAt(0)) + original.substring(1);
+        return result;
+    }
+
 }

@@ -1,12 +1,9 @@
 package com.github.datalking.beans.factory.support;
 
-import com.github.datalking.annotation.meta.AnnotationMetadata;
 import com.github.datalking.beans.factory.config.AnnotatedBeanDefinition;
 import com.github.datalking.beans.factory.config.BeanDefinition;
 import com.github.datalking.beans.factory.config.BeanDefinitionHolder;
 import com.github.datalking.util.Assert;
-
-import java.util.Set;
 
 /**
  * BeanDefinitionReader相关工具类
@@ -29,7 +26,7 @@ public class BeanDefinitionReaderUtils {
     public static AbstractBeanDefinition createBeanDefinition(String className, ClassLoader classLoader) throws ClassNotFoundException {
 
         Assert.notNull(className, "className cannot be null when createBeanDefinition()");
-        GenericBeanDefinition bd = new GenericBeanDefinition();
+        RootBeanDefinition bd = new RootBeanDefinition();
         if (classLoader != null) {
             // classLoader不为空时，bean就是对象实例
             bd.setBeanClass(Class.forName(className));

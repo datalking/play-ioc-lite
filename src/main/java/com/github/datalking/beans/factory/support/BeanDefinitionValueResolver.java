@@ -34,7 +34,7 @@ public class BeanDefinitionValueResolver {
 
     private Object resolveReference(Object argName, RuntimeBeanReference ref) throws Exception {
 
-        String refName=ref.getBeanName();
+        String refName = ref.getBeanName();
 
         Object bean = this.beanFactory.getBean(refName);
 //        this.beanFactory.registerDependentBean(refName, this.beanName);
@@ -42,6 +42,4 @@ public class BeanDefinitionValueResolver {
     }
 
 
-
-
-    }
+}

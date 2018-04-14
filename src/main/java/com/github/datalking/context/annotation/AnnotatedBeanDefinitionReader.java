@@ -1,12 +1,13 @@
 package com.github.datalking.context.annotation;
 
-import com.github.datalking.beans.factory.config.AnnotatedBeanDefinition;
 import com.github.datalking.beans.factory.config.BeanDefinitionHolder;
 import com.github.datalking.beans.factory.support.AnnotatedGenericBeanDefinition;
 import com.github.datalking.beans.factory.support.BeanDefinitionReaderUtils;
 import com.github.datalking.beans.factory.support.BeanDefinitionRegistry;
 
 /**
+ * 注解BeanDefinition读取器
+ *
  * @author yaoo on 4/9/18
  */
 public class AnnotatedBeanDefinitionReader {
@@ -16,7 +17,6 @@ public class AnnotatedBeanDefinitionReader {
     public AnnotatedBeanDefinitionReader(BeanDefinitionRegistry registry) {
         this.registry = registry;
     }
-
 
 
     public void register(Class<?>... annotatedClasses) {

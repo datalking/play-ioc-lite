@@ -40,7 +40,13 @@ public class ClassPathBeanDefinitionScanner {
 
     }
 
-    protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
+    /**
+     * 执行扫描带有@Component标注的bean
+     *
+     * @param basePackages 要扫描的包
+     * @return beanDefinition的集合
+     */
+    public Set<BeanDefinitionHolder> doScan(String... basePackages) {
 
         Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
 
@@ -93,19 +99,16 @@ public class ClassPathBeanDefinitionScanner {
 
     }
 
-
+    /**
+     * 判断class上是否有 @Component 注解
+     * 对应于spring的ClassPathScanningCandidateComponentProvider.isCandidateComponent()
+     *
+     * @param clazz 类对象
+     * @return 是否有
+     */
     private boolean isCandidateComponent(Class clazz) {
 
-//        Annotation[] annos = clazz.getDeclaredAnnotations();
-//        for (Annotation anno : annos) {
-//            // 判断注解类型是否含有@Component
-//            if (anno.getClass().getName().equals(Component.class.getName())) {
-//                System.out.println("==== " + anno.getClass().getName() + "是Component");
-//                return true;
-//            }
-//        }
-
-        if (clazz.isAnnotationPresent(Component.class)){
+        if (clazz.isAnnotationPresent(Component.class)) {
             return true;
         }
 

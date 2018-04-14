@@ -14,7 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 生成的单例bean的集合
- * ** 核心类 **
  *
  * @author yaoo on 4/4/18
  */

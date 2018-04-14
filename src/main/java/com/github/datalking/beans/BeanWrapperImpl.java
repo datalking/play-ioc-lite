@@ -7,7 +7,6 @@ import java.util.List;
 
 /**
  * 包装bean属性 实现类
- * todo 可批量操作属性值，支持嵌套设置属性
  *
  * @author yaoo on 4/3/18
  */
@@ -19,12 +18,22 @@ public class BeanWrapperImpl implements BeanWrapper {
 //    private CachedIntrospectionResults cachedIntrospectionResults;
 
 
+    public BeanWrapperImpl() {
+    }
+
     public BeanWrapperImpl(Object o) {
         this.wrappedObject = o;
     }
 
     public BeanWrapperImpl(Class<?> clazz) throws IllegalAccessException, InstantiationException {
         this.wrappedObject = clazz.newInstance();
+    }
+
+    public void setBeanInstance(Object object) {
+        this.wrappedObject = object;
+        //this.rootObject = object;
+        //this.typeConverterDelegate = new TypeConverterDelegate(this, this.wrappedObject);
+        //setIntrospectionClass(object.getClass());
     }
 
     public final Object getWrappedInstance() {
@@ -104,7 +113,7 @@ public class BeanWrapperImpl implements BeanWrapper {
 
             ///默认处理引用类型
             default:
-                declaredField.set(this.wrappedObject,value);
+                declaredField.set(this.wrappedObject, value);
 
         }
 

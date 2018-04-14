@@ -1,10 +1,13 @@
 package com.github.datalking.bean.strbean;
 
+import com.github.datalking.annotation.Component;
+
 /**
  * bean 所有字段为string
  *
  * @author yaoo on 4/5/18
  */
+@Component
 public class BeanStr01 {
 
     String id;

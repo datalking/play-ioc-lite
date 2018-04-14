@@ -7,16 +7,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 标注为配置类
+ * 自动扫描的多个包
  *
- * @author yaoo on 4/2/18
+ * @author yaoo on 4/13/18
  */
-@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
 @Documented
-@Component
-public @interface Configuration {
+public @interface ComponentScans {
 
-    String value() default "";
+    ComponentScan[] value();
 
 }

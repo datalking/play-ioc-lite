@@ -1,7 +1,5 @@
 package com.github.datalking.context.annotation;
 
-import com.github.datalking.beans.factory.support.AbstractBeanFactory;
-import com.github.datalking.beans.factory.support.BeanDefinitionRegistry;
 import com.github.datalking.beans.factory.support.DefaultListableBeanFactory;
 import com.github.datalking.context.support.AbstractApplicationContext;
 import com.github.datalking.util.Assert;
@@ -32,14 +30,17 @@ public class AnnotationConfigApplicationContext extends AbstractApplicationConte
 
     public AnnotationConfigApplicationContext(Class<?>... annotatedClasses) {
         this();
+        // 注册当前class的BeanDefinition
         register(annotatedClasses);
-        //refresh();
+        // 各种后置处理器、立即实例化
+        refresh();
+
     }
 
     public AnnotationConfigApplicationContext(String... basePackages) {
         this();
         scan(basePackages);
-        //refresh();
+        refresh();
     }
 
     /**

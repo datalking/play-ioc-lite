@@ -15,7 +15,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * BeanFactory默认实现类
- * ** 核心类 **
  *
  * @author yaoo on 4/3/18
  */

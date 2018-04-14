@@ -10,6 +10,8 @@ import com.github.datalking.beans.factory.support.DefaultListableBeanFactory;
 import com.github.datalking.beans.factory.xml.XmlBeanDefinitionReader;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * 直接使用BeanFactory作为容器的示例
  */
@@ -38,8 +40,10 @@ public class BeanFactoryTest {
 
         HelloService hService = (HelloService) beanFactory.getBean("helloService");
         WorldService wService = (WorldService) beanFactory.getBean("worldService");
-        hService.print();
-        wService.print();
+        //hService.print();
+        //wService.print();
+        assertEquals("hello", hService.getText());
+        assertEquals("world", wService.getText());
 
 
     }

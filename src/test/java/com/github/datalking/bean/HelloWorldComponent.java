@@ -1,14 +1,17 @@
 package com.github.datalking.bean;
 
-public class HelloWorld {
+import com.github.datalking.annotation.Component;
+
+@Component
+public class HelloWorldComponent {
 
     private String message;
 
-    public HelloWorld(String message) {
+    public HelloWorldComponent(String message) {
         this.message = message;
     }
 
-    public HelloWorld() {
+    public HelloWorldComponent() {
         this.message = "default message is ....";
 
     }

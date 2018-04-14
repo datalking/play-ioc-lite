@@ -6,6 +6,16 @@ public class HelloService {
 
     private WorldService worldService;
 
+    public HelloService() {
+        this.text = "default text";
+        this.worldService = null;
+    }
+
+    public HelloService(String text, WorldService worldService) {
+        this.text = text;
+        this.worldService = worldService;
+    }
+
     public void print() {
         System.out.println(text);
     }

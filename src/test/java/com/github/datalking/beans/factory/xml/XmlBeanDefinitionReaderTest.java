@@ -14,6 +14,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
+
 
 public class XmlBeanDefinitionReaderTest {
 
@@ -42,7 +44,9 @@ public class XmlBeanDefinitionReaderTest {
         NodeList children = rootElement.getChildNodes();
         Node current = null;
         int count = children.getLength();
-        System.out.println("根节点的child个数是：" + count);
+        //System.out.println("根节点的child个数是：" + count);
+
+        assertEquals("5", count+"");
 
 //        for (int i = 0; i < count; i++) {
 //            current = children.item(i);

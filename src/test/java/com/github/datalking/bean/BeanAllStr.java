@@ -10,9 +10,9 @@ import com.github.datalking.annotation.Component;
 @Component
 public class BeanAllStr {
 
-    String id;
-    String name;
-    String desc;
+    private String id;
+    private String name;
+    private String desc;
 
     public String getId() {
         return id;

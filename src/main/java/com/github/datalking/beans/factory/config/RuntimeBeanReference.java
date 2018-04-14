@@ -15,6 +15,11 @@ public class RuntimeBeanReference {
         this.beanName = beanName;
     }
 
+    /**
+     * 获取引用对应bean的名称
+     *
+     * @return beanName
+     */
     public String getBeanName() {
         return this.beanName;
     }

@@ -12,12 +12,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 解析xml元素属性代理类
- * ** 核心类 **
  *
  * @author yaoo on 4/6/18
  */
@@ -81,7 +77,7 @@ public class BeanDefinitionParserDelegate {
             beanName = ((AbstractBeanDefinitionReader) this.beanDefinitionReader).generateBeanName((BeanDefinition) this.beanDefinitionReader);
         }
 
-        AbstractBeanDefinition beanDefinition = parseBeanDefinitionElement(ele, beanName,null);
+        AbstractBeanDefinition beanDefinition = parseBeanDefinitionElement(ele, beanName, null);
 
         //List<String> aliases = new ArrayList<String>();
 
@@ -181,7 +177,11 @@ public class BeanDefinitionParserDelegate {
         if ((hasRefAttribute && hasValueAttribute)) {
             throw new Exception(ele.getTagName() + " is only allowed to contain either 'ref' attribute OR 'value' attribute ");
         }
-// todo ref和value不能都没有
+
+        if ((!hasRefAttribute && !hasValueAttribute)) {
+            throw new Exception(ele.getTagName() + " must contain either 'ref' attribute OR 'value' attribute ");
+        }
+
         /// 如果是ref属性，返回RuntimeBeanReference对象
         if (hasRefAttribute) {
             String refName = ele.getAttribute(REF_ATTRIBUTE);

@@ -7,6 +7,8 @@ import com.github.datalking.beans.PropertyValue;
 import com.github.datalking.beans.factory.config.AutowireCapableBeanFactory;
 import com.github.datalking.beans.factory.config.BeanDefinition;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +30,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     @Override
     @SuppressWarnings("unchecked")
     public <T> T createBean(Class<T> beanClass) throws Exception {
-        BeanDefinition bd = new GenericBeanDefinition();
-        return (T) createBean(beanClass.getName(), (GenericBeanDefinition) bd, null);
+        BeanDefinition bd = new RootBeanDefinition();
+        return (T) createBean(beanClass.getName(), (RootBeanDefinition) bd, null);
     }
 
     @Override
-    protected Object createBean(String beanName, GenericBeanDefinition bd, Object[] args) throws Exception {
+    protected Object createBean(String beanName, RootBeanDefinition bd, Object[] args) throws Exception {
 
         Class beanClass = doResolveBeanClass(bd);
         bd.setBeanClass(beanClass);
@@ -42,7 +44,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     }
 
 
-    protected Object doCreateBean(final String beanName, final GenericBeanDefinition bd, final Object[] args) throws Exception {
+    protected Object doCreateBean(final String beanName, final RootBeanDefinition bd, final Object[] args) throws Exception {
 
         BeanWrapper instanceWrapper = null;
 
@@ -75,10 +77,16 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         return bean;
     }
 
-    protected BeanWrapper createBeanInstance(String beanName, GenericBeanDefinition bd, Object[] args) throws Exception {
+    protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition bd, Object[] args) throws Exception {
 
 //        Class beanClass = doResolveBeanClass(bd);
 //        bd.setBeanClass(beanClass);
+
+
+        // 根据ConfigurationClassBeanDefinition指定的FactoryMethod创建bean实例
+        if (bd.getFactoryMethodName() != null) {
+            return instantiateUsingFactoryMethod(beanName, bd, args);
+        }
 
         //todo 选择构造器
 
@@ -91,7 +99,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
      * 通过jdk反射生成bean实例
      * spring对调用无参构造函数生成实例使用的是cglib
      */
-    private BeanWrapper instantiateBean(final String beanName, final GenericBeanDefinition bd) throws IllegalAccessException, InstantiationException {
+    private BeanWrapper instantiateBean(final String beanName, final RootBeanDefinition bd) throws IllegalAccessException, InstantiationException {
 
         Object beanInstance = bd.getBeanClass().newInstance();
         BeanWrapper bw = new BeanWrapperImpl(beanInstance);
@@ -100,24 +108,83 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
     }
 
-    private void populateBean(String beanName, GenericBeanDefinition bd, BeanWrapper bw) throws Exception {
+    private void populateBean(String beanName, RootBeanDefinition bd, BeanWrapper bw) throws Exception {
 
         applyPropertyValues(beanName, bd, bw);
 
     }
 
-    private Class<?> doResolveBeanClass(GenericBeanDefinition bd) throws ClassNotFoundException {
-        String className = bd.getBeanClassName();
-        if (className != null) {
-            return Class.forName(className);
-        }
-        return null;
-    }
 
+    /**
+     * 使用工厂方法创建bean实例
+     *
+     * @param beanName     要创建的bean的名称
+     * @param bd           该bean的BeanDefiniiton
+     * @param explicitArgs 参数
+     * @return bean实例包装类
+     */
+    private BeanWrapper instantiateUsingFactoryMethod(final String beanName, final RootBeanDefinition bd, final Object[] explicitArgs) {
+
+        BeanWrapperImpl bw = new BeanWrapperImpl();
+
+        Object factoryBean = null;
+        Class<?> factoryClass;
+        //boolean isStatic;
+
+        try {
+
+            factoryBean = getBean(bd.getFactoryBeanName());
+            if (factoryBean == null) {
+                throw new Exception(beanName + "找不到FactoryBeanName");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        factoryClass = factoryBean.getClass();
+
+        Method factoryMethodToUse = null;
+        //ArgumentsHolder argsHolderToUse = null;
+        //Object[] argsToUse = null;
+
+        Method[] maybeFactoryMethods = factoryClass.getDeclaredMethods();
+        for (Method m : maybeFactoryMethods) {
+            if (m.getName().equals(beanName)) {
+                factoryMethodToUse = m;
+            }
+        }
+
+        if (factoryMethodToUse == null) {
+            try {
+                throw new Exception(beanName + "找不到factoryMethodToUse");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        Object beanInstance = null;
+
+        try {
+            //beanInstance = this.beanFactory.getInstantiationStrategy().instantiate(mbd, beanName, this.beanFactory, factoryBean, factoryMethodToUse, argsToUse);
+
+            beanInstance = factoryMethodToUse.invoke(factoryBean);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        if (beanInstance == null) {
+            return null;
+        }
+
+        bw.setBeanInstance(beanInstance);
+        return bw;
+    }
 
     /**
      * 将BeanDefinition的属性注入到bean实例
-     * todo 注解处理
      *
      * @param beanName 待添加属性的beanName
      * @param bd       要添加的属性定义
@@ -147,6 +214,25 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         bw.setPropertyValues(new MutablePropertyValues(deepCopy));
 
 
+    }
+
+    public Class<?> doResolveBeanClass(RootBeanDefinition bd) throws ClassNotFoundException {
+        return doResolveBeanClass((AbstractBeanDefinition) bd);
+    }
+
+    public Class<?> doResolveBeanClass(AbstractBeanDefinition bd) {
+        String className = bd.getBeanClassName();
+        if (className != null) {
+
+            try {
+                return Class.forName(className);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return null;
     }
 
 

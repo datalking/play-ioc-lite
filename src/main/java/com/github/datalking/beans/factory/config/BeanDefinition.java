@@ -4,7 +4,6 @@ import com.github.datalking.beans.MutablePropertyValues;
 
 /**
  * bean属性元数据定义 根接口
- * 只定义了公共方法
  *
  * @author yaoo on 4/3/18
  */
@@ -20,11 +19,16 @@ public interface BeanDefinition {
 
     void setLazyInit(boolean lazyInit);
 
-    void setDependsOn(String... dependsOn);
-
-    String[] getDependsOn();
-
     boolean isSingleton();
+
+    String getFactoryBeanName();
+    void setFactoryBeanName(String factoryBeanName);
+    String getFactoryMethodName();
+    void setFactoryMethodName(String factoryMethodName);
+
+//    void setDependsOn(String... dependsOn);
+//
+//    String[] getDependsOn();
 
 //    boolean isPrimary();
 //    boolean isPrototype();

@@ -1,5 +1,5 @@
 # play-ioc-lite   
->简单可控的IoC容器  
+>简单可控的IoC容器 Lite版  
 
 ## target
 - 专注于实现纯粹的依赖注入
@@ -37,7 +37,6 @@
 ```
 
 ## demo
-
 #### 使用 [ApplicationContext](https://github.com/datalking/play-ioc-lite/blob/master/src/test/java/com/github/datalking/context/ApplicationContextTest.java)
 ```
 ApplicationContext applicationContext = new ClassPathXmlApplicationContext("beans-primitive.xml");
@@ -107,7 +106,6 @@ System.out.println(beanAllStr);
 - [ ] 迁移到以注解为主的使用方式
 
 ## user guide
-
 - play-ioc支持的xml配置说明
     - 顶层标签为 `<beans>`
     - `<bean>` 元素可配置 id,name,class属性，class必须，id和name都可选
@@ -122,7 +120,6 @@ System.out.println(beanAllStr);
     - bean实例最终保存在DefaultSingletonBeanRegistry的singletonObjects中
 
 ## License
-
 [MIT](http://opensource.org/licenses/MIT)
 
 

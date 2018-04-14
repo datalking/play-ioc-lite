@@ -4,7 +4,7 @@
 
     <artifactId>play-ioc-lite</artifactId>
     <groupId>com.github.datalking</groupId>
-    <version>0.0.1</version>
+    <version>0.1.0</version>
     <packaging>jar</packaging>
     <name>play-ioc-lite</name>
     <description>simple ioc container for java beans.</description>
@@ -53,7 +53,7 @@
         </plugins>
     </build>
 
-    
+
     <profiles>
         <profile>
             <id>dev</id>

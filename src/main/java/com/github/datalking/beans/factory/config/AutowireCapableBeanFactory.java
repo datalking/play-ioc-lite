@@ -5,7 +5,7 @@ import com.github.datalking.beans.factory.BeanFactory;
 /**
  * AutowireCapableBeanFactory 接口
  * <p>
- * 主要用于管理不受spring容器控制的bean
+ * 主要用于创建bean
  *
  * @author yaoo on 4/3/18
  */
